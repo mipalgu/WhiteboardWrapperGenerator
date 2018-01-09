@@ -55,8 +55,9 @@ if let error = container.error {
     exit(EXIT_FAILURE)
 }
 
-//dump(container)
-
-
 //generate files
+if let tsl: TSL = container.object {
+    let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslFilePath.deletingLastPathComponent())
+    fileGenerator.generate()
+}
 

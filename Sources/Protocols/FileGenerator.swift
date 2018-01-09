@@ -27,9 +27,9 @@ public extension FileGenerator {
     func generate(from: T)
     {
         var fm: FileManager = FileManager.default
-        print("Save '\(createContent(obj: from))'")
-
+        print("Saving '\(name)'")
 /*
+\(createContent(obj: from))
 
             let _ = try? self.fm.createDirectory(
                 at: path,

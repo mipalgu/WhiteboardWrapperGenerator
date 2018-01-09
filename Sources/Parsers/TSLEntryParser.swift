@@ -17,10 +17,9 @@ final public class TSLEntryParser {
 
         let ret = ParserObjectContainer<TSLEntry>()
 
-        let commaSep = inputLine.split(separator: ",", omittingEmptySubsequences: false)
-        if commaSep.count != 4 {
-            //TMP
-            //ret.addWarning(msg: "Entry has the wrong number of elements")
+        let commaSep = inputLine.split(separator: ",", maxSplits: 3, omittingEmptySubsequences: false)
+        if commaSep.count < 4 {
+            return ret.error(msg: "Entry has too few elements")
         }
         let elements: [String] = commaSep.map { String($0).trimmingCharacters(in: .whitespaces) }
 

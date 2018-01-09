@@ -20,7 +20,7 @@ let package = Package(
             dependencies: []),
         .target(
             name: "DataStructures",
-            dependencies: []),
+            dependencies: ["Protocols"]),
         .target(
             name: "FileGenerators",
             dependencies: []),

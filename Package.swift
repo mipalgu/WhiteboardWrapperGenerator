@@ -16,6 +16,9 @@ let package = Package(
             name: "WhiteboardWrapperGenerator",
             dependencies: ["Config", "DataStructures", "FileGenerators", "Parsers"]),
         .target(
+            name: "NamingFuncs",
+            dependencies: []),
+        .target(
             name: "Config",
             dependencies: []),
         .target(
@@ -23,7 +26,7 @@ let package = Package(
             dependencies: ["Protocols"]),
         .target(
             name: "FileGenerators",
-            dependencies: ["DataStructures"]),
+            dependencies: ["DataStructures", "NamingFuncs"]),
         .target(
             name: "Parsers",
             dependencies: ["DataStructures", "ParserFuncs"]),

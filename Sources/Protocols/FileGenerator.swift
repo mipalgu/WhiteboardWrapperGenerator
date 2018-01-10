@@ -13,7 +13,6 @@ public protocol FileGenerator {
     associatedtype T
     var name: String { get set }
     var path: URL { get set }
-    var content: String { get set }
 
     init(path: URL) 
 
@@ -26,10 +25,10 @@ public extension FileGenerator {
 
     func generate(from: T)
     {
+        let content:String = createContent(obj: from)
         var fm: FileManager = FileManager.default
-        print("Saving '\(name)'")
+        print("Saving '\(content)'")
 /*
-\(createContent(obj: from))
 
             let _ = try? self.fm.createDirectory(
                 at: path,

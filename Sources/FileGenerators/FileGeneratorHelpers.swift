@@ -1,5 +1,5 @@
 /**                                                                     
- *  /file TypeEnumHeaderGenerator.swift
+ *  /file FileGeneratorHelpers.swift
  *                                                                      
  *  Created by Carl Lusty in 2018.                                      
  *  Copyright (c) 2018 Carl Lusty                                       
@@ -7,45 +7,40 @@
  */              
                                                         
 import Foundation
+import NamingFuncs 
 
-import DataStructures
-import Protocols
+final public class FileGeneratorHelpers {
 
-final public class TypeEnumHeaderGenerator: FileGenerator {
-
-    public typealias T = TSL
-
-    public var name: String
-    public var path: URL
-    public var content: String
-
-    public init(path: URL) {
-        self.name = "guwhiteboardtypelist_c_generated.h"
-        self.path = path
-        self.content = ""
-    }
-
-    public func createContent(obj: T) -> String {
+    public static func createCopyright(fileName: String) -> String {
         return """
-/**
- *  /file guwhiteboardtypelist_c_generated.h
- *
- *  Created by Carl Lusty in 2013.
- *  Copyright (c) 2013-2016 Carl Lusty and Rene Hexel
- *  All rights reserved.
- */
-
-
-#ifndef GUWHITEBOARD_TYPELIST_C_H_
-#define GUWHITEBOARD_TYPELIST_C_H_
-
-
-#define WANT_WB_STRINGS
-
-#include \"gusimplewhiteboard.h\" //GSW_NUM_RESERVED
-
-#define GSW_NUM_TYPES_DEFINED 113
-"""
+        /**
+         *  /file \(fileName)
+         *
+         *  Created by Carl Lusty in 2018.
+         *  Copyright (c) 2013-2018 Carl Lusty and Rene Hexel
+         *  All rights reserved.
+         */
+        """
     }
+
+    public static func createIfDefWrapper(fileName: String) -> (String, String) {
+        let defineName: String = NamingFuncs.createIfDefName(fileName: fileName)
+        return (createIfDefTop(defineName: defineName), 
+                createIfDefBottom(defineName: defineName))
+    }
+
+    static func createIfDefTop(defineName: String) -> String {
+        return """
+            #ifndef \(defineName)
+            #define \(defineName)
+            """
+    }
+
+    static func createIfDefBottom(defineName: String) -> String {
+        return """
+            #endif //\(defineName)
+            """
+    }
+
 }
 

@@ -28,6 +28,7 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
         let tsl: TSL = obj //alias
+        let classes: [TSLEntry] = tsl.entries
         return """
 \(copyright)
 
@@ -45,14 +46,27 @@ extern \"C\"
 #include \"guwhiteboardtypelist_c_generated.h\"
 }
 
-	/** WB Ptr Class: Print @brief print to stdout */ 
-        class Print_t: public generic_whiteboard_object<std::string > { 
-	public: 
-		/** Constructor: Print */ 
-		Print_t(gu_simple_whiteboard_descriptor *wbd = NULL): generic_whiteboard_object<std::string >(wbd, kPrint_v, true) {}
-		/** Constructor: Print */ 
-		Print_t(std::string value, gu_simple_whiteboard_descriptor *wbd = NULL): generic_whiteboard_object<std::string >(value, kPrint_v, wbd, true) {} 
-	};
+\(classes.map { entry in 
+        let templateDataType = NamingFuncs.createCPlusPlusTemplateDataType(entry.type)
+        let templateClassName = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
+        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let atomicString = entry.atomic.value ? "true" : "false"
+        return """
+            /** WB Ptr Class: \(templateClassName) @brief \(entry.comment.string) */ 
+            class \(templateClassName): public generic_whiteboard_object<\(templateDataType) > { 
+                public: 
+                /** Constructor: \(templateClassName) */ 
+                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULL): generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
+                \(entry.type.isCustomTypeClass ? "" : """
+                    /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
+                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULL): generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
+                    """)
+            };
+
+
+        """
+        }.reduce("", +)
+)
 }
 
 #pragma clang diagnostic pop

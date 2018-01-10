@@ -7,6 +7,7 @@
  */              
                                                         
 import Foundation
+import DataStructures
 
 final public class NamingFuncs {
 
@@ -14,8 +15,29 @@ final public class NamingFuncs {
         return fileName.uppercased().replacingOccurrences(of: ".", with: "_")
     }
 
-    public static func createTypeEnumName(msgSlotName: String) -> String {
-        return "k\(msgSlotName)_v"
+    public static func createMsgEnumName(_ name: String) -> String {
+        return "k\(name)_v"
+    }
+
+    public static func createCPlusPlusClassName(_ type: MessageType) -> String {
+        if type.isLegacyCPlusPlusClassNaming {
+            return "\(type.typeName)_t"
+        }
+        else {
+            //TODO pass to callums snakeCase thingy
+            return "gen_\(type.typeName)_t"
+        }
+    }
+
+    public static func createCPlusPlusTemplateClassName(_ msgSlotName: String) -> String {
+        return msgSlotName + "_t"
+    }
+
+    public static func createCPlusPlusTemplateDataType(_ type: MessageType) -> String {
+        if type.isCustomTypeClass {
+            return "class " + createCPlusPlusClassName(type)
+        }
+        return type.typeName 
     }
 
 

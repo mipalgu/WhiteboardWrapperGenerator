@@ -15,7 +15,7 @@ final public class FileGeneratorManager {
 
     var tsl: TSL
 
-    var typeEnumHeaderGenerator: TypeEnumHeaderGenerator
+    var msgEnumHeaderGenerator: MsgEnumHeaderGenerator
 
     var cPlusPlusWBTemplateWrapperGenerator: CPlusPlusWBTemplateWrapperGenerator
     //var cPlusPlusTCPTemplateWrapperGenerator: CPlusPlusTCPTemplateWrapperGenerator
@@ -31,7 +31,7 @@ final public class FileGeneratorManager {
 
     public init(tsl: TSL, wbPath: URL) {
         self.tsl = tsl
-        typeEnumHeaderGenerator = TypeEnumHeaderGenerator(path: wbPath)
+        msgEnumHeaderGenerator = MsgEnumHeaderGenerator(path: wbPath)
 
         cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath)
         //cPlusPlusTCPTemplateWrapperGenerator = CPlusPlusTCPTemplateWrapperGenerator(path: wbPath)
@@ -48,7 +48,7 @@ final public class FileGeneratorManager {
 
     public func generate() {
         print("Generating Files.")
-        typeEnumHeaderGenerator.generate(from: tsl) 
+        msgEnumHeaderGenerator.generate(from: tsl) 
         cPlusPlusWBTemplateWrapperGenerator.generate(from: tsl) 
 
         //cPlusPlusTCPTemplateWrapperGenerator.generate(from: tsl) 

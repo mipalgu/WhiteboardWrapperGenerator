@@ -1,5 +1,5 @@
 /**                                                                     
- *  /file TypeEnumHeaderGenerator.swift
+ *  /file MsgEnumHeaderGenerator.swift
  *                                                                      
  *  Created by Carl Lusty in 2018.                                      
  *  Copyright (c) 2018 Carl Lusty                                       
@@ -12,7 +12,7 @@ import DataStructures
 import Protocols
 import NamingFuncs
 
-final public class TypeEnumHeaderGenerator: FileGenerator {
+final public class MsgEnumHeaderGenerator: FileGenerator {
 
     public typealias T = TSL
 
@@ -48,7 +48,7 @@ typedef enum wb_types
 {
 \(tsl.entries.enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(NamingFuncs.createTypeEnumName(msgSlotName: e.name.string)) = \(i), \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i), \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 } WBTypes; ///< All the message 'types' for the class based whiteboard 

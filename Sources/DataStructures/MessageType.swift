@@ -8,22 +8,15 @@
 
 import Protocols
 
-public enum SupportedPODTypes {
-    case uint8_t
-    case uint16_t
-    case uint32_t
-    case uint64_t
-}
-
 final public class MessageType: HasInit {
+    public var isLegacyCPlusPlusClassNaming: Bool
     public var isCustomTypeClass: Bool
-    public var customClassName: String?
-    public var podType: SupportedPODTypes?
+    public var typeName: String
 
     public init() {
+        self.isLegacyCPlusPlusClassNaming = false
         self.isCustomTypeClass = false
-        self.customClassName = nil
-        self.podType = nil
+        self.typeName = ""
     }
 }
 

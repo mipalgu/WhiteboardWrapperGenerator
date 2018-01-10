@@ -22,17 +22,40 @@ final public class MessageTypeParser {
         }
 
         let type: MessageType = MessageType()
-/*
 
-        switch valueString {
-            case "atomic":
-                atomic.value = true
-            case "nonatomic":
-                atomic.value = false
-            default:
-                return ret.error(msg: "'\(valueString)' is not a valid Atomicity flag. Valid values are 'atomic' or 'nonatomic'.")
+        //class:type
+        if valueString.starts(with: "class:") {
+            //legacy warning
+            ret.addWarning(msg: "Using legacy type naming. For custom classes please use 'gen:' and the name of your '.gen' file. Example: 'foo.gen' -> 'gen:foo'.")
+            let className: String = String(valueString.dropFirst("class:".count))
+            if className.isEmpty {
+                return ret.error(msg: "No class name found.")
+            }
+
+            type.isLegacyCPlusPlusClassNaming = true
+            type.isCustomTypeClass = true
+            type.typeName = className
         }
-*/
+        //gen:type
+        else if valueString.starts(with: "gen:") {
+            let genName: String = String(valueString.dropFirst("gen:".count))
+            if genName.isEmpty {
+                return ret.error(msg: "No gen name found.")
+            }
+
+            type.isLegacyCPlusPlusClassNaming = false
+            type.isCustomTypeClass = true
+            type.typeName = genName
+        }
+        //type          
+        else {
+            //TODO check if supported, warn on floats for example
+
+            type.isLegacyCPlusPlusClassNaming = false
+            type.isCustomTypeClass = false
+            type.typeName = valueString
+        }
+
         ret.set(object: type)
         return ret
     }

@@ -65,9 +65,6 @@ final public class FileGeneratorManager {
 }
 
 /* NEEDED
-"guwhiteboardtypelist_c_generated.h"    TypeEnumHeaderGenerator
-
-"guwhiteboardtypelist_generated.h"      CPlusPlusWBTemplateWrapperGenerator
 "guwhiteboardtypelist_tcp_generated.h"  CPlusPlusTCPTemplateWrapperGenerator
 "WBFunctor_types_generated.h"           CPlusPlusWBTemplateFunctorGenerator
 

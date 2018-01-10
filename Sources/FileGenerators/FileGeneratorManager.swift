@@ -16,42 +16,51 @@ final public class FileGeneratorManager {
     var tsl: TSL
 
     var typeEnumHeaderGenerator: TypeEnumHeaderGenerator
-    /*
-        CPlusPlusWBTemplateWrapperGenerator
-        CPlusPlusTCPTemplateWrapperGenerator
-        CPlusPlusWBTemplateFunctorGenerator
 
-        CPlusPlusWBPosterGenerator
-        CPlusPlusWBGetterGenerator
+    var cPlusPlusWBTemplateWrapperGenerator: CPlusPlusWBTemplateWrapperGenerator
+    //var cPlusPlusTCPTemplateWrapperGenerator: CPlusPlusTCPTemplateWrapperGenerator
+    //var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
 
-        CMsgSerialiseGenerator
-        CMsgDeserialiseGenerator
+    //var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
+    //var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
 
-        CTypeStringLookupGenerator
-        */
+    //var cMsgSerialiseGenerator: CMsgSerialiseGenerator
+    //var cMsgDeserialiseGenerator: CMsgDeserialiseGenerator
 
+    //var cTypeStringLookupGenerator: CTypeStringLookupGenerator
 
     public init(tsl: TSL, wbPath: URL) {
         self.tsl = tsl
         typeEnumHeaderGenerator = TypeEnumHeaderGenerator(path: wbPath)
+
+        cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath)
+        //cPlusPlusTCPTemplateWrapperGenerator = CPlusPlusTCPTemplateWrapperGenerator(path: wbPath)
+        //cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator path: wbPath)
+
+        //cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
+        //cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
+
+        //cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
+        //cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath)
+
+        //cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath)
     }
 
     public func generate() {
         print("Generating Files.")
         typeEnumHeaderGenerator.generate(from: tsl) 
-        /*
         cPlusPlusWBTemplateWrapperGenerator.generate(from: tsl) 
-        cPlusPlusTCPTemplateWrapperGenerator.generate(from: tsl) 
-        cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
 
-        cPlusPlusWBPosterGenerator.generate(from: tsl) 
-        cPlusPlusWBGetterGenerator.generate(from: tsl) 
+        //cPlusPlusTCPTemplateWrapperGenerator.generate(from: tsl) 
+        //cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
 
-        cMsgSerialiseGenerator.generate(from: tsl) 
-        cMsgDeserialiseGenerator.generate(from: tsl) 
+        //cPlusPlusWBPosterGenerator.generate(from: tsl) 
+        //cPlusPlusWBGetterGenerator.generate(from: tsl) 
 
-        cTypeStringLookupGenerator.generate(from: tsl) 
-        */
+        //cMsgSerialiseGenerator.generate(from: tsl) 
+        //cMsgDeserialiseGenerator.generate(from: tsl) 
+
+        //cTypeStringLookupGenerator.generate(from: tsl) 
     }
 }
 

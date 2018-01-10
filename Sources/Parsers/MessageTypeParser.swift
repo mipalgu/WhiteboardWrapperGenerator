@@ -26,7 +26,7 @@ final public class MessageTypeParser {
         //class:type
         if valueString.starts(with: "class:") {
             //legacy warning
-            ret.addWarning(msg: "Using legacy type naming. For custom classes please use 'gen:' and the name of your '.gen' file. Example: 'foo.gen' -> 'gen:foo'.")
+            ret.addWarning(msg: "Using legacy type naming. For custom classes please use 'gen:' and the name of your '.gen' file. Example: 'foo.gen' -> 'gen:foo'. You can keep using this format but it could result in some edge case file name generatoring errors. I suggest switching :)")
             let className: String = String(valueString.dropFirst("class:".count))
             if className.isEmpty {
                 return ret.error(msg: "No class name found.")

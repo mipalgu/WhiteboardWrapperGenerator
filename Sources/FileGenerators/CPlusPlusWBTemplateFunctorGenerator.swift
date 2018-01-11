@@ -43,7 +43,6 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
         let msgFunctorTemplate = NamingFuncs.createMsgFunctorTemplateName(entry.name.string)
         let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type)
         let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
-        //let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
         return """
 
         \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
@@ -66,8 +65,8 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
         
             /** internal method of linking classes */
             static WBFunctorBase *bind(\(msgFunctorTemplate) *obj, void (\(msgFunctorTemplate)::*f)(guWhiteboard::WBTypes, guWhiteboard::\(CPlusPlusClassName) &), guWhiteboard::WBTypes t) { return new \(msgFunctorName)<\(msgFunctorTemplate) >(obj, f, t); }
-        };
-        #endif //\(CPlusPlusClassName)_DEFINED
+        }; 
+        \(entry.type.isCustomTypeClass ? "#endif //\(CPlusPlusClassName)_DEFINED" : "")
 
         """
         }.reduce("", +)

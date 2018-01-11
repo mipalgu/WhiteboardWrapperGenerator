@@ -20,7 +20,7 @@ final public class FileGeneratorManager {
     var cPlusPlusWBTemplateWrapperGenerator: CPlusPlusWBTemplateWrapperGenerator
     var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
 
-    //var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
+    var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
     //var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
 
     //var cMsgSerialiseGenerator: CMsgSerialiseGenerator
@@ -35,7 +35,7 @@ final public class FileGeneratorManager {
         cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath)
         cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath)
 
-        //cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
+        cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
         //cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
 
         //cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
@@ -51,7 +51,7 @@ final public class FileGeneratorManager {
         cPlusPlusWBTemplateWrapperGenerator.generate(from: tsl) 
         cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
 
-        //cPlusPlusWBPosterGenerator.generate(from: tsl) 
+        cPlusPlusWBPosterGenerator.generate(from: tsl) 
         //cPlusPlusWBGetterGenerator.generate(from: tsl) 
 
         //cMsgSerialiseGenerator.generate(from: tsl) 
@@ -62,7 +62,6 @@ final public class FileGeneratorManager {
 }
 
 /* NEEDED
-"guwhiteboardposter.cpp"                CPlusPlusWBPosterGenerator
 "guwhiteboardgetter.cpp"                CPlusPlusWBGetterGenerator
 
 "guwhiteboardserialiser.c"              CMsgSerialiseGenerator

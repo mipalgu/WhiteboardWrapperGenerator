@@ -17,7 +17,7 @@ let package = Package(
             dependencies: ["Config", "DataStructures", "FileGenerators", "Parsers"]),
         .target(
             name: "NamingFuncs",
-            dependencies: []),
+            dependencies: ["DataStructures"]),
         .target(
             name: "Config",
             dependencies: []),

@@ -18,7 +18,7 @@ final public class FileGeneratorManager {
     var msgEnumHeaderGenerator: MsgEnumHeaderGenerator
 
     var cPlusPlusWBTemplateWrapperGenerator: CPlusPlusWBTemplateWrapperGenerator
-    //var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
+    var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
 
     //var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
     //var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
@@ -33,7 +33,7 @@ final public class FileGeneratorManager {
         msgEnumHeaderGenerator = MsgEnumHeaderGenerator(path: wbPath)
 
         cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath)
-        //cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator path: wbPath)
+        cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath)
 
         //cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
         //cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
@@ -49,7 +49,7 @@ final public class FileGeneratorManager {
         msgEnumHeaderGenerator.generate(from: tsl) 
 
         cPlusPlusWBTemplateWrapperGenerator.generate(from: tsl) 
-        //cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
+        cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
 
         //cPlusPlusWBPosterGenerator.generate(from: tsl) 
         //cPlusPlusWBGetterGenerator.generate(from: tsl) 
@@ -62,8 +62,6 @@ final public class FileGeneratorManager {
 }
 
 /* NEEDED
-"WBFunctor_types_generated.h"           CPlusPlusWBTemplateFunctorGenerator
-
 "guwhiteboardposter.cpp"                CPlusPlusWBPosterGenerator
 "guwhiteboardgetter.cpp"                CPlusPlusWBGetterGenerator
 

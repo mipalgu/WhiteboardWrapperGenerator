@@ -21,11 +21,11 @@ final public class NamingFuncs {
 
     public static func createCPlusPlusClassName(_ type: MessageType) -> String {
         if type.isLegacyCPlusPlusClassNaming {
-            return "\(type.typeName)_t"
+            return "\(type.typeName)"
         }
         else {
             //TODO pass to callums snakeCase thingy
-            return "gen_\(type.typeName)_t"
+            return "gen_\(type.typeName)"
         }
     }
 
@@ -38,6 +38,14 @@ final public class NamingFuncs {
             return "class " + createCPlusPlusClassName(type)
         }
         return type.typeName 
+    }
+
+    public static func createMsgFunctorName(_ msgName: String) -> String {
+        return msgName + "_WBFunctor"
+    }
+
+    public static func createMsgFunctorTemplateName(_ msgName: String) -> String {
+        return msgName + "_WBFunctor_T"
     }
 
 

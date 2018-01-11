@@ -21,7 +21,7 @@ final public class FileGeneratorManager {
     var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
 
     var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
-    //var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
+    var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
 
     //var cMsgSerialiseGenerator: CMsgSerialiseGenerator
     //var cMsgDeserialiseGenerator: CMsgDeserialiseGenerator
@@ -36,7 +36,7 @@ final public class FileGeneratorManager {
         cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath)
 
         cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
-        //cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
+        cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
 
         //cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
         //cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath)
@@ -45,14 +45,13 @@ final public class FileGeneratorManager {
     }
 
     public func generate() {
-        print("Generating Files.")
         msgEnumHeaderGenerator.generate(from: tsl) 
 
         cPlusPlusWBTemplateWrapperGenerator.generate(from: tsl) 
         cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
 
         cPlusPlusWBPosterGenerator.generate(from: tsl) 
-        //cPlusPlusWBGetterGenerator.generate(from: tsl) 
+        cPlusPlusWBGetterGenerator.generate(from: tsl) 
 
         //cMsgSerialiseGenerator.generate(from: tsl) 
         //cMsgDeserialiseGenerator.generate(from: tsl) 
@@ -62,8 +61,6 @@ final public class FileGeneratorManager {
 }
 
 /* NEEDED
-"guwhiteboardgetter.cpp"                CPlusPlusWBGetterGenerator
-
 "guwhiteboardserialiser.c"              CMsgSerialiseGenerator
 "guwhiteboarddeserialiser.c"            CMsgDeserialiseGenerator
 

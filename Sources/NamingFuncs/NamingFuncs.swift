@@ -48,6 +48,21 @@ final public class NamingFuncs {
         return msgName + "_WBFunctor_T"
     }
 
-
+    public static func createWasClassGeneratedFlag(_ type: MessageType) -> String {
+        if type.isLegacyCPlusPlusClassNaming {
+            return "SerialisationNotSupportedWithLegacyNaming"
+        }
+        else {
+            return type.typeName.uppercased() + "_GENERATED"
+        }
+    }
+    public static func createClassGeneratorCStructFlag(_ type: MessageType) -> String {
+        if type.isLegacyCPlusPlusClassNaming {
+            return "SerialisationNotSupportedWithLegacyNaming"
+        }
+        else {
+            return type.typeName.uppercased() + "_C_STRUCT"
+        }
+    }
 }
 

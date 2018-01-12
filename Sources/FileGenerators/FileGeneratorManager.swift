@@ -23,7 +23,7 @@ final public class FileGeneratorManager {
     var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
     var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
 
-    //var cMsgSerialiseGenerator: CMsgSerialiseGenerator
+    var cMsgSerialiseGenerator: CMsgSerialiseGenerator
     //var cMsgDeserialiseGenerator: CMsgDeserialiseGenerator
 
     //var cTypeStringLookupGenerator: CTypeStringLookupGenerator
@@ -38,7 +38,7 @@ final public class FileGeneratorManager {
         cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
         cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
 
-        //cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
+        cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
         //cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath)
 
         //cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath)
@@ -53,7 +53,7 @@ final public class FileGeneratorManager {
         cPlusPlusWBPosterGenerator.generate(from: tsl) 
         cPlusPlusWBGetterGenerator.generate(from: tsl) 
 
-        //cMsgSerialiseGenerator.generate(from: tsl) 
+        cMsgSerialiseGenerator.generate(from: tsl) 
         //cMsgDeserialiseGenerator.generate(from: tsl) 
 
         //cTypeStringLookupGenerator.generate(from: tsl) 
@@ -61,7 +61,6 @@ final public class FileGeneratorManager {
 }
 
 /* NEEDED
-"guwhiteboardserialiser.c"              CMsgSerialiseGenerator
 "guwhiteboarddeserialiser.c"            CMsgDeserialiseGenerator
 
 "guwhiteboardtypelist_c_typestrings_generated.c"    CTypeStringLookupGenerator

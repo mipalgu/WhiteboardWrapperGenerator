@@ -104,7 +104,7 @@ static string intvectostring(const vector<int> &vec)
     
     for (vector<int>::const_iterator it = vec.begin(); it != vec.end(); it++)
     {
-        if (it != vec.begin()) ss << ",";
+        if (it != vec.begin()) ss << \",\";
         ss << *it;
     }
 
@@ -122,7 +122,6 @@ namespace guWhiteboard
         return getmsg(types_map[message_type], msg, wbd);
     }
 
-
     string getmsg(WBTypes message_index, gu_simple_message *msg, gu_simple_whiteboard_descriptor *wbd)
     {
         switch (message_index)
@@ -133,47 +132,27 @@ namespace guWhiteboard
         let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
         return """
 
-        case \(slotEnumName):
-        {
-        \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
-            return true;
-        \(entry.type.isCustomTypeClass ? """
-            #else
+            case \(slotEnumName):
+            {
+\(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
+                class \(WBPtrClass) m(wbd);
+                return msg ? m.get_from(msg)\(entry.type.isCustomTypeClass ? ".description()":"") : m.get()\(entry.type.isCustomTypeClass ? ".description()":"");
+\(entry.type.isCustomTypeClass ? """
+#else
                 return \"##unsupported##\";
-            #endif //\(CPlusPlusClassName)_DEFINED
-            """ : "")
-        }
-        """
+#endif //\(CPlusPlusClassName)_DEFINED
+""" : "")
+            }
+"""
         }.reduce("", +)
 )
-
-        case kPrint_v:
-        {
-/** WB Ptr Class: Print @brief Nil */ 
-            class Print_t m(wbd);
-            return msg ? m.get_from(msg) : m.get();
         }
-        case kMOTION_Commands_v:
-#ifdef MOTION_Commands_DEFINED
-        {
-/** WB Ptr Class: MOTION_Commands @brief Nil */ 
-            class MOTION_Commands_t m(wbd);
-            return msg ? m.get_from(msg).description() : m.get().description();
-        }
-#else
-            return "##unsupported##";
-
-#endif // !MOTION_Commands_DEFINED
-
-        (void) msg;
-    }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored \"-Wunreachable-code\"
-
-    return \"##unsupported##\";
+        (void) msg;
+        return \"##unsupported##\";
 #pragma clang diagnostic pop
     }
-
 #pragma clang diagnostic pop
 #pragma clang diagnostic pop
 }

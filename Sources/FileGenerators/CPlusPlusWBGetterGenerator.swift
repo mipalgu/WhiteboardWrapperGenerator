@@ -24,29 +24,6 @@ final public class CPlusPlusWBGetterGenerator: FileGenerator {
         self.path = path
     }
 
-    func createParserForPrimitives(type: String, inputVarName: String) -> String {
-        switch(type) {
-            case      "int",
-                     "bool",
-                  "uint8_t", 
-                   "int8_t", 
-                 "uint16_t", 
-                  "int16_t", 
-                 "uint32_t", 
-                  "int32_t",
-                 "uint64_t", 
-                  "int64_t":
-                return "static_cast<\(type)>(atoi(\(inputVarName)))"
-            case    "float",
-                   "double":
-                return "static_cast<\(type)>(atof(\(inputVarName)))"
-            case "std::string":
-                return "\(inputVarName)"
-            default:
-                return "Can not parse '\(type)'"
-        }
-    }
-
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 

@@ -51,7 +51,7 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
         class \(msgFunctorName): public WBFunctor<\(msgFunctorTemplate) > {
         public:
             /** WBFunctor constructor for \(msgFunctorTemplate) */
-            \(msgFunctorName)(\(msgFunctorTemplate)* obj, void (\(msgFunctorTemplate)::*pFunc) (guWhiteboard::WBTypes, guWhiteboard::CPlusPlusClassName &), guWhiteboard::WBTypes t): WBFunctor<\(msgFunctorTemplate) >(obj, (void (\(msgFunctorTemplate)::*) (guWhiteboard::WBTypes, gu_simple_message*))pFunc, t) { }
+            \(msgFunctorName)(\(msgFunctorTemplate)* obj, void (\(msgFunctorTemplate)::*pFunc) (guWhiteboard::WBTypes, guWhiteboard::\(CPlusPlusClassName) &), guWhiteboard::WBTypes t): WBFunctor<\(msgFunctorTemplate) >(obj, (void (\(msgFunctorTemplate)::*) (guWhiteboard::WBTypes, gu_simple_message*))pFunc, t) { }
         
             /** call method for callbacks, for class \(msgFunctorName) */
             void call(gu_simple_message *m) {

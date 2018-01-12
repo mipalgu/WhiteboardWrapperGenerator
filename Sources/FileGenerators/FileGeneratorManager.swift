@@ -26,7 +26,7 @@ final public class FileGeneratorManager {
     var cMsgSerialiseGenerator: CMsgSerialiseGenerator
     var cMsgDeserialiseGenerator: CMsgDeserialiseGenerator
 
-    //var cTypeStringLookupGenerator: CTypeStringLookupGenerator
+    var cTypeStringLookupGenerator: CTypeStringLookupGenerator
 
     public init(tsl: TSL, wbPath: URL) {
         self.tsl = tsl
@@ -41,7 +41,7 @@ final public class FileGeneratorManager {
         cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
         cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath)
 
-        //cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath)
+        cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath)
     }
 
     public func generate() {
@@ -56,11 +56,7 @@ final public class FileGeneratorManager {
         cMsgSerialiseGenerator.generate(from: tsl) 
         cMsgDeserialiseGenerator.generate(from: tsl) 
 
-        //cTypeStringLookupGenerator.generate(from: tsl) 
+        cTypeStringLookupGenerator.generate(from: tsl) 
     }
 }
-
-/* NEEDED
-"guwhiteboardtypelist_c_typestrings_generated.c"    CTypeStringLookupGenerator
-*/
 

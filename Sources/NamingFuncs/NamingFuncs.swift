@@ -28,6 +28,15 @@ final public class NamingFuncs {
             return "gen_\(type.typeName)"
         }
     }
+    
+    public static func createCStructName(_ type: MessageType) -> String {
+        if type.isLegacyCPlusPlusClassNaming {
+            return "NotSupportedWithLegacyNaming"
+        }
+        else {
+            return "CallumsgenToStructFuncCall"
+        }
+    }
 
     public static func createCPlusPlusTemplateClassName(_ msgSlotName: String) -> String {
         return msgSlotName + "_t"
@@ -56,9 +65,10 @@ final public class NamingFuncs {
             return type.typeName.uppercased() + "_GENERATED"
         }
     }
+
     public static func createClassGeneratorCStructFlag(_ type: MessageType) -> String {
         if type.isLegacyCPlusPlusClassNaming {
-            return "SerialisationNotSupportedWithLegacyNaming"
+            return "NotSupportedWithLegacyNaming"
         }
         else {
             return type.typeName.uppercased() + "_C_STRUCT"

@@ -26,21 +26,20 @@ public extension FileGenerator {
     func generate(from: T)
     {
         let content:String = createContent(obj: from)
-        var fm: FileManager = FileManager.default
-        print("Saving '\(content)'")
-/*
+        let fm: FileManager = FileManager.default
+        
+        guard let _ = try? fm.createDirectory(
+            at: path,
+            withIntermediateDirectories: true) else {
+                fatalError("Could not create '\(path.path)'")
+            }
 
-            let _ = try? self.fm.createDirectory(
-                at: path,
-                withIntermediateDirectories: false
-            )
-
-
-
-        guard let encoded = str.data(using: String.Encoding.utf8) else {
-            return false
+        guard let encoded = content.data(using: String.Encoding.utf8) else {
+            fatalError("Could not handle file content for '\(name)'")
         }
-        return self.fm.createFile(atPath: path.path, contents: encoded)
-*/
+
+        if !fm.createFile(atPath: path.appendingPathComponent(name).path, contents: encoded) {
+            fatalError("Could not save the file '\(name)'")
+        }
     }
 }

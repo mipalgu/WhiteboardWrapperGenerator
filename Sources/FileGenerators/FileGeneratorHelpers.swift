@@ -41,6 +41,5 @@ final public class FileGeneratorHelpers {
             #endif //\(defineName)
             """
     }
-
 }
 

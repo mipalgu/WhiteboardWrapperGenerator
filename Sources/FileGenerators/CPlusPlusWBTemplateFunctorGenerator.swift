@@ -43,6 +43,8 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
         let msgFunctorTemplate = NamingFuncs.createMsgFunctorTemplateName(entry.name.string)
         let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type)
         let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
+        let classNameOrPOD = entry.type.isCustomTypeClass ? CPlusPlusClassName : entry.type.typeName
+        let isCustom: Bool = entry.type.isCustomTypeClass
         return """
 
         \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
@@ -51,20 +53,20 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
         class \(msgFunctorName): public WBFunctor<\(msgFunctorTemplate) > {
         public:
             /** WBFunctor constructor for \(msgFunctorTemplate) */
-            \(msgFunctorName)(\(msgFunctorTemplate)* obj, void (\(msgFunctorTemplate)::*pFunc) (guWhiteboard::WBTypes, guWhiteboard::\(CPlusPlusClassName) &), guWhiteboard::WBTypes t): WBFunctor<\(msgFunctorTemplate) >(obj, (void (\(msgFunctorTemplate)::*) (guWhiteboard::WBTypes, gu_simple_message*))pFunc, t) { }
+            \(msgFunctorName)(\(msgFunctorTemplate)* obj, void (\(msgFunctorTemplate)::*pFunc) (guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &), guWhiteboard::WBTypes t): WBFunctor<\(msgFunctorTemplate) >(obj, (void (\(msgFunctorTemplate)::*) (guWhiteboard::WBTypes, gu_simple_message*))pFunc, t) { }
         
             /** call method for callbacks, for class \(msgFunctorName) */
             void call(gu_simple_message *m) {
-                guWhiteboard::\(CPlusPlusClassName) result = guWhiteboard::\(WBPtrClass)().get_from(m);
-                \(CPlusPlusClassName)_function_t funct((void (\(msgFunctorTemplate)::*)(guWhiteboard::WBTypes, guWhiteboard::\(CPlusPlusClassName) &))WBFunctor<\(msgFunctorTemplate) >::get_s_func_ptr());
+                \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) result = guWhiteboard::\(WBPtrClass)().get_from(m);
+                \(entry.name.string)_function_t funct((void (\(msgFunctorTemplate)::*)(guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &))WBFunctor<\(msgFunctorTemplate) >::get_s_func_ptr());
                 (WBFunctor<\(msgFunctorTemplate) >::fObject->*funct)(WBFunctor<\(msgFunctorTemplate) >::type_enum, result);
             }
         
             /** define callback signature */
-            typedef void (\(msgFunctorTemplate)::*\(CPlusPlusClassName)_function_t) (guWhiteboard::WBTypes, guWhiteboard::\(CPlusPlusClassName) &);
+            typedef void (\(msgFunctorTemplate)::*\(entry.name.string)_function_t) (guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &);
         
             /** internal method of linking classes */
-            static WBFunctorBase *bind(\(msgFunctorTemplate) *obj, void (\(msgFunctorTemplate)::*f)(guWhiteboard::WBTypes, guWhiteboard::\(CPlusPlusClassName) &), guWhiteboard::WBTypes t) { return new \(msgFunctorName)<\(msgFunctorTemplate) >(obj, f, t); }
+            static WBFunctorBase *bind(\(msgFunctorTemplate) *obj, void (\(msgFunctorTemplate)::*f)(guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &), guWhiteboard::WBTypes t) { return new \(msgFunctorName)<\(msgFunctorTemplate) >(obj, f, t); }
         }; 
         \(entry.type.isCustomTypeClass ? "#endif //\(CPlusPlusClassName)_DEFINED" : "")
 

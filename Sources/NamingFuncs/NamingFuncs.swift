@@ -8,24 +8,16 @@
                                                         
 import Foundation
 import DataStructures
+import whiteboard_helpers
 
 final public class NamingFuncs {
-
-    public static func createIfDefName(fileName: String) -> String {
-        return fileName.uppercased().replacingOccurrences(of: ".", with: "_")
-    }
-
-    public static func createMsgEnumName(_ name: String) -> String {
-        return "k\(name)_v"
-    }
 
     public static func createCPlusPlusClassName(_ type: MessageType) -> String {
         if type.isLegacyCPlusPlusClassNaming {
             return "\(type.typeName)"
         }
         else {
-            //TODO pass to callums snakeCase thingy
-            return "gen_\(type.typeName)"
+            return WhiteboardHelpers().createClassName(forClassNamed: type.typeName)
         }
     }
     
@@ -34,8 +26,16 @@ final public class NamingFuncs {
             return "NotSupportedWithLegacyNaming"
         }
         else {
-            return "CallumsgenToStructFuncCall"
+            return WhiteboardHelpers().createStructName(forClassNamed: type.typeName)
         }
+    }
+
+    public static func createIfDefName(fileName: String) -> String {
+        return fileName.uppercased().replacingOccurrences(of: ".", with: "_")
+    }
+
+    public static func createMsgEnumName(_ name: String) -> String {
+        return "k\(name)_v"
     }
 
     public static func createCPlusPlusTemplateClassName(_ msgSlotName: String) -> String {

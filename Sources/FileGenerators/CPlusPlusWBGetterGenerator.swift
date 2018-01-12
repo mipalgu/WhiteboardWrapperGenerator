@@ -24,15 +24,40 @@ final public class CPlusPlusWBGetterGenerator: FileGenerator {
         self.path = path
     }
 
+    func createToString(type: MessageType, inputVarName: String) -> String {
+        if type.isCustomTypeClass {
+            return inputVarName.appending(".description()")
+        }
+        switch(type.typeName) {
+            case      "int",
+                     "bool",
+                  "uint8_t", 
+                   "int8_t", 
+                 "uint16_t", 
+                  "int16_t", 
+                 "uint32_t", 
+                  "int32_t",
+                 "uint64_t", 
+                  "int64_t":
+                return "gu_ltos(long(\(inputVarName)))"
+            case    "float",
+                   "double":
+                return "gu_dtos(\(inputVarName))"
+            case "std::string":
+                return "\(inputVarName)"
+            case "std::vector<int>":
+                return "intvectostring(\(inputVarName))"
+            default:
+                return "\(inputVarName)"
+        }
+    }
+
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         return """
 \(copyright)
-
-\(ifDefTop)
 
 /** Auto-generated, don't modify! */
 
@@ -107,13 +132,15 @@ namespace guWhiteboard
         let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type)
         let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
         let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let get_fromStringConverted: String = createToString(type: entry.type, inputVarName: "m.get_from(msg)")
+        let getStringConverted: String = createToString(type: entry.type, inputVarName: "m.get()")
         return """
 
             case \(slotEnumName):
             {
 \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
                 class \(WBPtrClass) m(wbd);
-                return msg ? m.get_from(msg)\(entry.type.isCustomTypeClass ? ".description()":"") : m.get()\(entry.type.isCustomTypeClass ? ".description()":"");
+                return msg ? \(get_fromStringConverted) : \(getStringConverted);
 \(entry.type.isCustomTypeClass ? """
 #else
                 return \"##unsupported##\";
@@ -133,8 +160,6 @@ namespace guWhiteboard
 #pragma clang diagnostic pop
 #pragma clang diagnostic pop
 }
-
-\(ifDefBottom)
 
 """
     }

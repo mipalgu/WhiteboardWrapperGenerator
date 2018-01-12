@@ -36,26 +36,25 @@ final public class CPlusPlusWBPosterGenerator: FileGenerator {
                   "int32_t",
                  "uint64_t", 
                   "int64_t":
-                return "static_cast<\(type)>(atoi(\(inputVarName)))"
+                return "static_cast<\(type)>(atoi(\(inputVarName).c_str()))"
             case    "float",
                    "double":
-                return "static_cast<\(type)>(atof(\(inputVarName)))"
+                return "static_cast<\(type)>(atof(\(inputVarName).c_str()))"
             case "std::string":
                 return "\(inputVarName)"
+            case "std::vector<int>":
+                return "strtointvec(\(inputVarName))"
             default:
-                return "Can not parse '\(type)'"
+                return "\(inputVarName)"
         }
     }
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         return """
 \(copyright)
-
-\(ifDefTop)
 
 /** Auto-generated, don't modify! */
 
@@ -186,7 +185,6 @@ whiteboard_types_map::whiteboard_types_map(): map<string, WBTypes>()
 )
     (void) self;
 }
-\(ifDefBottom)
 
 """
     }

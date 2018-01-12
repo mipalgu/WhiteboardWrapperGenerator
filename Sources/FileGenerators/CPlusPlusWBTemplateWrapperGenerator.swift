@@ -72,6 +72,7 @@ extern \"C\"
 #pragma clang diagnostic pop
 
 \(ifDefBottom)
+
 """
     }
 }

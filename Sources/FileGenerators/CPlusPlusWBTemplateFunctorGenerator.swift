@@ -75,6 +75,7 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
 #pragma clang diagnostic pop
 
 \(ifDefBottom)
+
 """
     }
 }

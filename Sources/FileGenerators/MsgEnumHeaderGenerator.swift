@@ -57,6 +57,7 @@ extern const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED];
 extern const char *WBTypes_typeValues[GSW_NUM_TYPES_DEFINED];
 
 \(ifDefBottom)
+
 """
     }
 }

@@ -60,6 +60,7 @@ const char *WBTypes_typeValues[GSW_NUM_TYPES_DEFINED] =
 };
 
 \(ifDefBottom)
+
 """
     }
 }

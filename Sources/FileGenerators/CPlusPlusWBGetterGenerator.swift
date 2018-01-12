@@ -135,6 +135,7 @@ namespace guWhiteboard
 }
 
 \(ifDefBottom)
+
 """
     }
 }

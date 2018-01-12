@@ -187,6 +187,7 @@ whiteboard_types_map::whiteboard_types_map(): map<string, WBTypes>()
     (void) self;
 }
 \(ifDefBottom)
+
 """
     }
 }

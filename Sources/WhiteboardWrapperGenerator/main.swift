@@ -9,7 +9,6 @@
 import Foundation
 
 import DataStructures
-import Config
 import FileGenerators
 import Parsers
 
@@ -35,6 +34,36 @@ while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:")
 }
 
 //Load config
+let configName: String = "WhiteboardWrapper.config"
+let configPaths: [String] = ["/home/carl/src/MiPal/GUNao/posix/gusimplewhiteboard"]
+let config: Config
+if let configM = Config(name: configName, paths: configPaths) {
+    config = configM
+}
+else {
+    config = Config()
+    print("""
+        Config Error:
+            Could not locate a '\(configName)' in the paths specified.
+            Creating a default version in the current directory.
+            Please move it to the same directory as the .tsl file.
+            Also, ensure that it is in the search paths.
+        """)
+    let newConfigPath: URL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+    let newConfigPathName: URL = newConfigPath.appendingPathComponent(configName)
+    guard config.save(file: newConfigPathName) else {
+        print("""
+        IO Error:
+            Could not save the file to: '\(newConfigPathName.path)'
+        """)
+        exit(1)
+    }
+    exit(1)
+}
+
+dump(config)
+
+exit(1)
 
 //Find tsl from path
 let tslFilePath: URL = URL(fileURLWithPath: "/home/carl/src/MiPal/GUNao/posix/gusimplewhiteboard/guwhiteboardtypelist.tsl")

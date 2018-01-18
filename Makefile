@@ -14,6 +14,7 @@ install: host
 
 clean:
 	rm -rf .build
+	rm -rf *.resolved
 
 .include "../../mk/jenkins.mk"
 

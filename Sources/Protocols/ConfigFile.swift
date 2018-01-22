@@ -39,7 +39,8 @@ public extension ConfigFile {
     }
 
     static func findConfig(name: String, paths: [URL]) -> URL? {
-        let fileM = paths.first { Self.fileExists(url: $0.appendingPathComponent(name)) }
+        let urls: [URL] = paths.map { $0.appendingPathComponent(name) }
+        let fileM = urls.first { Self.fileExists(url: $0) }
         return fileM ?? nil
     }
 

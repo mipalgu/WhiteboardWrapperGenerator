@@ -13,23 +13,35 @@ import FileGenerators
 import Parsers
 
 var configDir: String = /*CWD + */ "../"
-var tslName: String = "default.tsl"
+var tslNameFlag: String?
 
 while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:"), option != -1 {
     switch UnicodeScalar(CUnsignedChar(option)) {
     case "f":
-        tslName = String(cString: optarg)
+        tslNameFlag = String(cString: optarg)
         print("""
             Legacy option '-f':
-            \t  This should be set in WhiteboardWrapperGenerator.config.
-            \t  WhiteboardWrapperGenerator.config can override this flag.
-            \t  '-f' will be removed at some point.
+                This should be set in WhiteboardWrapperGenerator.config.
+                This will override the value in WhiteboardWrapperGenerator.config.
+                '-f' will be removed at some point.
             """)
 
     case "P":
+        print("""
+            Legacy option '-P':
+                -P is depricated, please use -I instead.
+                They are functionally the same.
+                '-P' will be removed at some point.
+            """)
+        configDir = String(cString: optarg)
+    case "I":
         configDir = String(cString: optarg)
     default:
-        fatalError("Unknown option")
+        print("""
+            Usage:
+                TODO
+            """)
+        exit(1)
     }
 }
 
@@ -60,6 +72,9 @@ else {
     }
     exit(1)
 }
+
+//if let tslNameFlag
+    //overright config value.
 
 dump(config)
 

@@ -12,10 +12,10 @@ import DataStructures
 import FileGenerators
 import Parsers
 
-var configDir: String = /*CWD + */ "../"
+var configIncludePaths: [String] = []
 var tslNameFlag: String?
 
-while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:"), option != -1 {
+while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:I:"), option != -1 {
     switch UnicodeScalar(CUnsignedChar(option)) {
     case "f":
         tslNameFlag = String(cString: optarg)
@@ -25,7 +25,6 @@ while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:")
                 This will override the value in WhiteboardWrapperGenerator.config.
                 '-f' will be removed at some point.
             """)
-
     case "P":
         print("""
             Legacy option '-P':
@@ -33,27 +32,28 @@ while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:")
                 They are functionally the same.
                 '-P' will be removed at some point.
             """)
-        configDir = String(cString: optarg)
+        configIncludePaths.append(String(cString: optarg))
     case "I":
-        configDir = String(cString: optarg)
+        configIncludePaths.append(String(cString: optarg))
     default:
         print("""
             Usage:
-                TODO
+                -f: Force .tsl file name, overriding configs (legacy).
+                -P: Add a path to look for config files in (legacy).
+                -I: Add a path to look for config files in.
             """)
         exit(1)
     }
 }
 
-//Load config
-let configName: String = "WhiteboardWrapper.config"
-let configPaths: [String] = ["/home/carl/src/MiPal/GUNao/posix/gusimplewhiteboard"]
-let config: Config
-if let configM = Config(name: configName, paths: configPaths) {
-    config = configM
+if configIncludePaths.isEmpty {
+    configIncludePaths = ["../", "./", "../gusimplewhiteboard/"]
 }
-else {
-    config = Config()
+
+let configName: String = "WhiteboardWrapper.config"
+
+//Load config
+guard let configURL = Config.findConfig(name: configName, paths: configIncludePaths) else {
     print("""
         Config Error:
             Could not locate a '\(configName)' in the paths specified.
@@ -63,7 +63,7 @@ else {
         """)
     let newConfigPath: URL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
     let newConfigPathName: URL = newConfigPath.appendingPathComponent(configName)
-    guard config.save(file: newConfigPathName) else {
+    guard Config().save(file: newConfigPathName) else {
         print("""
         IO Error:
             Could not save the file to: '\(newConfigPathName.path)'
@@ -73,18 +73,21 @@ else {
     exit(1)
 }
 
-//if let tslNameFlag
-    //overright config value.
+guard let config = Config(file: configURL) else {
+    print("""
+    Config Error:
+        Could not load config from '\(configURL.path)'.
+    """)
+    exit(1)
+}
 
-dump(config)
-
-exit(1)
-
-//Find tsl from path
-let tslFilePath: URL = URL(fileURLWithPath: "/home/carl/src/MiPal/GUNao/posix/gusimplewhiteboard/guwhiteboardtypelist.tsl")
+//commandline config overrides
+let tslName: String = tslNameFlag ?? config.tslName
+let tslPath: URL = configURL.deletingLastPathComponent()
+let tslURL: URL = tslPath.appendingPathComponent(tslName)
 
 //parse tsl
-let container = TSLParser.parse(tslFilePath: tslFilePath)
+let container = TSLParser.parse(tslFilePath: tslURL)
 
 for warning in container.warnings {
     print("""
@@ -101,7 +104,7 @@ if let error = container.error {
 
 //generate files
 if let tsl: TSL = container.object {
-    let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslFilePath.deletingLastPathComponent())
+    let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslPath)
     fileGenerator.generate()
 }
 

@@ -11,11 +11,10 @@ import Foundation
 public protocol ConfigFile: Codable {
 
     init()
-    init?(name: String, paths: [String])
-    init?(name: String, paths: [URL])
-    init?(name: String, path: String)
-    init?(name: String, path: URL)
     init?(file: URL)
+
+    static func findConfig(name: String, paths: [String]) -> URL?
+    static func findConfig(name: String, paths: [URL]) -> URL?
 
     static func fileExists(url: URL) -> Bool
     mutating func load(file: URL) -> Bool
@@ -23,27 +22,6 @@ public protocol ConfigFile: Codable {
 }
 
 public extension ConfigFile {
-
-    init?(name: String, paths: [String]) {
-        let urlPaths: [URL] = paths.map { URL(fileURLWithPath: $0) }
-        self.init(name: name, paths: urlPaths)
-    }
-
-    init?(name: String, paths: [URL]) {
-        let fileM = paths.first { Self.fileExists(url: $0.appendingPathComponent(name)) }
-        guard let file: URL = fileM else {
-            return nil
-        }
-        self.init(file: file.appendingPathComponent(name))
-    }
-
-    init?(name: String, path: String) {
-        self.init(file: URL(fileURLWithPath: path).appendingPathComponent(name))
-    }
-
-    init?(name: String, path: URL) {
-        self.init(file: path.appendingPathComponent(name))
-    }
 
     init?(file: URL) {
         guard Self.fileExists(url: file) else {
@@ -53,6 +31,16 @@ public extension ConfigFile {
         if !self.load(file: file) {
             return nil
         }
+    }
+
+    static func findConfig(name: String, paths: [String]) -> URL? {
+        let urlPaths: [URL] = paths.map { URL(fileURLWithPath: $0) }
+        return Self.findConfig(name: name, paths: urlPaths)
+    }
+
+    static func findConfig(name: String, paths: [URL]) -> URL? {
+        let fileM = paths.first { Self.fileExists(url: $0.appendingPathComponent(name)) }
+        return fileM ?? nil
     }
 
     static func fileExists(url: URL) -> Bool {

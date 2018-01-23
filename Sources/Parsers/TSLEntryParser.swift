@@ -13,7 +13,7 @@ import DataStructures
 
 final public class TSLEntryParser {
 
-    public static func parse(inputLine: String) -> ParserObjectContainer<TSLEntry> {
+    public static func parse(inputLine: String, config: Config) -> ParserObjectContainer<TSLEntry> {
 
         let ret = ParserObjectContainer<TSLEntry>()
 
@@ -26,7 +26,7 @@ final public class TSLEntryParser {
         var currentChar: Int = 0
         //process msg type
         //--------------------------
-        let typeContainer = MessageTypeParser.parse(valueString: String(elements[0]))
+        let typeContainer = MessageTypeParser.parse(valueString: String(elements[0]), config: config)
         ret.concat(append: typeContainer, objAppend: {
                 $0.type = $1
                 return $0

@@ -87,7 +87,7 @@ let tslPath: URL = configURL.deletingLastPathComponent()
 let tslURL: URL = tslPath.appendingPathComponent(tslName)
 
 //parse tsl
-let container = TSLParser.parse(tslFilePath: tslURL)
+let container = TSLParser.parse(tslFilePath: tslURL, config: config)
 
 for warning in container.warnings {
     print("""

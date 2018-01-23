@@ -13,7 +13,7 @@ import DataStructures
 
 final public class TSLParser {
 
-    public static func parse(tslFilePath: URL) -> ParserObjectContainer<TSL> {
+    public static func parse(tslFilePath: URL, config: Config) -> ParserObjectContainer<TSL> {
 
         let ret = ParserObjectContainer<TSL>(location: "\(tslFilePath.path)")
 
@@ -33,7 +33,7 @@ final public class TSLParser {
         let origLoc = ret.currentLocation
         for (i, line) in content.split(separator: "\n").enumerated() {
             let lineNum: Int = i + 1 //Text editor line numbers
-            let entryContainer = TSLEntryParser.parse(inputLine: String(line))
+            let entryContainer = TSLEntryParser.parse(inputLine: String(line), config: config)
             ret.currentLocation = origLoc + ":\(lineNum)"
             ret.concat(append: entryContainer, objAppend: {
                 $0.entries.append($1)

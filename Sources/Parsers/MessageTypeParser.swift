@@ -13,7 +13,7 @@ import DataStructures
 
 final public class MessageTypeParser {
 
-    public static func parse(valueString: String) -> ParserObjectContainer<MessageType> {
+    public static func parse(valueString: String, config: Config) -> ParserObjectContainer<MessageType> {
 
         let ret = ParserObjectContainer<MessageType>()
 
@@ -49,7 +49,9 @@ final public class MessageTypeParser {
         }
         //type          
         else {
-            //TODO check if supported, warn on floats for example
+            if !config.acceptableTypes.types.contains(valueString) {
+                return ret.error(msg: "Whiteboard messages of type: '\(valueString)' have not been allowed in the configuration file.")
+            }
 
             type.isLegacyCPlusPlusClassNaming = false
             type.isCustomTypeClass = false

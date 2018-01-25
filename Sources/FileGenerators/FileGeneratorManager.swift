@@ -28,6 +28,8 @@ final public class FileGeneratorManager {
 
     var cTypeStringLookupGenerator: CTypeStringLookupGenerator
 
+    var cMsgHeaderIncludesGenerator: CMsgHeaderIncludesGenerator
+
     public init(tsl: TSL, wbPath: URL) {
         self.tsl = tsl
         msgEnumHeaderGenerator = MsgEnumHeaderGenerator(path: wbPath)
@@ -42,6 +44,8 @@ final public class FileGeneratorManager {
         cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath)
 
         cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath)
+
+        cMsgHeaderIncludesGenerator = CMsgHeaderIncludesGenerator(path: wbPath)
     }
 
     public func generate() {
@@ -57,6 +61,8 @@ final public class FileGeneratorManager {
         cMsgDeserialiseGenerator.generate(from: tsl) 
 
         cTypeStringLookupGenerator.generate(from: tsl) 
+
+        cMsgHeaderIncludesGenerator.generate(from: tsl) 
     }
 }
 

@@ -21,7 +21,7 @@ final public class CommentParser {
             return ret.error(msg: "The comment field is empty.")
         }
 
-        if valueString.count < 20 {
+        if valueString.count < 10 {
             ret.addWarning(msg: "That is a very short comment.")
         }
 

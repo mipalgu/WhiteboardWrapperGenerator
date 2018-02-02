@@ -104,9 +104,9 @@ extern \"C\"
 static vector<int> strtointvec(string str)
 {
     const char *sep = "|,";
-    char *context = NULL;
+    char *context = NULLPTR;
     vector<int> array;
-    for (char *element = strtok_r(const_cast<char *>(str.c_str()), sep, &context); element; element = strtok_r(NULL, sep, &context))
+    for (char *element = strtok_r(const_cast<char *>(str.c_str()), sep, &context); element; element = strtok_r(NULLPTR, sep, &context))
         array.push_back(atoi(element));
     return array;
 }

@@ -56,10 +56,10 @@ extern \"C\"
             class \(templateClassName): public generic_whiteboard_object<\(templateDataType) > { 
                 public: 
                 /** Constructor: \(templateClassName) */ 
-                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULL): generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
+                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
                 \(entry.type.isCustomTypeClass ? "" : """
                     /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
-                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULL): generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
+                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
                     """)
             };
 

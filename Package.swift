@@ -5,12 +5,19 @@ import PackageDescription
 
 let package = Package(
     name: "WhiteboardWrapperGenerator",
+    products: [
+        .executable(name: "WhiteboardWrapperGenerator", targets: ["WhiteboardWrapperGenerator"]),
+        .library(name: "WhiteboardWrapperGeneratorLib", targets: ["WhiteboardWrapperGeneratorLib"]),
+    ],
     dependencies: [
         .package(url: "ssh://git.mipal.net/git/whiteboard_helpers.git", .branch("master"))
     ],
     targets: [
         .target(
             name: "WhiteboardWrapperGenerator",
+            dependencies: ["WhiteboardWrapperGeneratorLib"]),
+        .target(
+            name: "WhiteboardWrapperGeneratorLib",
             dependencies: ["DataStructures", "FileGenerators", "Parsers"]),
         .target(
             name: "NamingFuncs",
@@ -30,5 +37,8 @@ let package = Package(
         .target(
             name: "Protocols",
             dependencies: []),
+        .testTarget(
+            name: "WhiteboardWrapperGeneratorTests",
+            dependencies: ["WhiteboardWrapperGeneratorLib"]),
     ]
 )

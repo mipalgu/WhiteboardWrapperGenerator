@@ -46,11 +46,17 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 /** All the message 'types' for the class based whiteboard */
 typedef enum wb_types
 {
-\(tsl.entries.enumerated().map { elm in 
+\(tsl.entries.dropLast().enumerated().map { elm in 
         let (i, e) = elm
         return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i), \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
+\(tsl.entries.suffix(1).enumerated().map { elm in 
+        let (i, e) = elm
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i) \t\t///< \(e.comment.string)\n"
+        }.reduce("", +)
+)
+
 } WBTypes; ///< All the message 'types' for the class based whiteboard 
 
 extern const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED];

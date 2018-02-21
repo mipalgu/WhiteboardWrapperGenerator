@@ -53,7 +53,7 @@ typedef enum wb_types
 )
 \(tsl.entries.suffix(1).enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i) \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 

@@ -36,6 +36,8 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
 
 \(ifDefTop)
 
+#include <gusimplewhiteboard/guwhiteboard_c_types_manual_definitions.h>
+
 \(customGenClasses.map { entry in 
         return """
 

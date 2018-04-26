@@ -46,15 +46,9 @@ public extension ConfigFile {
 
     static func fileExists(url: URL) -> Bool {
         let fm: FileManager = FileManager.default
-#if os(OSX)
         var isDirectory: ObjCBool = false
         let fileExists: Bool = fm.fileExists(atPath: url.path, isDirectory: &isDirectory)
         return fileExists && !isDirectory.boolValue
-#else
-        var isDirectory: Bool = false
-        let fileExists: Bool = fm.fileExists(atPath: url.path, isDirectory: &isDirectory)
-        return fileExists && !isDirectory
-#endif
     }
 
     mutating func load(file: URL) -> Bool {

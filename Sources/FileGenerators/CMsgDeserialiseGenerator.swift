@@ -46,7 +46,7 @@ final public class CMsgDeserialiseGenerator: FileGenerator {
 #include \"guwhiteboardserialisation.h\"
 #include \"guwhiteboard_c_types.h\"
 
-size_t deserialisemsg(WBTypes message_index, const void *serialised_in, void *message_out)
+int32_t deserialisemsg(WBTypes message_index, const void *serialised_in, void *message_out)
 {
     switch (message_index)
     {

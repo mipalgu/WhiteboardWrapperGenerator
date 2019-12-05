@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "WhiteboardWrapperGeneratorLib", targets: ["WhiteboardWrapperGeneratorLib"]),
     ],
     dependencies: [
-        .package(url: "ssh://git.mipal.net/git/whiteboard_helpers.git", .branch("master"))
+        .package(url: "https://github.com/mipalgu/whiteboard_helpers.git", .branch("master"))
     ],
     targets: [
         .target(

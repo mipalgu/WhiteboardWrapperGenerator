@@ -41,7 +41,7 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
 \(customGenClasses.map { entry in 
         return """
 
-#include <gusimplewhiteboard/typeClassDefs/\(NamingFuncs.createCStructName(entry.type)).h>
+#include <typeClassDefs/\(NamingFuncs.createCStructName(entry.type)).h>
 """
         }.reduce("", +)
 )

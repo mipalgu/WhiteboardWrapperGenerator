@@ -50,7 +50,8 @@ final public class CPlusPlusWBPosterGenerator: FileGenerator {
     }
 
     public func createContent(obj: T) -> String {
-        let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
+        let headerName = (obj.useCustomNamespace ? obj.wbNamespace + "_" + self.name : self.name)
+        let copyright = FileGeneratorHelpers.createCopyright(fileName: headerName)
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         return """
@@ -68,33 +69,33 @@ final public class CPlusPlusWBPosterGenerator: FileGenerator {
 #include \"guwhiteboardposter.h\"
 
 using namespace std;
-using namespace guWhiteboard;
+      using namespace guWhiteboard\(obj.useCustomNamespace ? "::" + obj.wbNamespace : "");
 
 extern \"C\"
 {
-    WBTypes whiteboard_type_for_message_named(const char *message_type)
+      \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_type_for_message_named(const char *message_type)
     {
-        return types_map[message_type];
+      return \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")types_map[message_type];
     }
 
-    bool whiteboard_post(const char *message_type, const char *message_content)
+    bool \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_post(const char *message_type, const char *message_content)
     {
-        return whiteboard_postmsg(types_map[message_type], message_content);
+      return \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_postmsg(\(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")types_map[message_type], message_content);
     }
 
-    bool whiteboard_post_to(gu_simple_whiteboard_descriptor *wbd, const char *message_type, const char *message_content)
+    bool \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_post_to(gu_simple_whiteboard_descriptor *wbd, const char *message_type, const char *message_content)
     {
-        return whiteboard_postmsg_to(wbd, types_map[message_type], message_content);
+      return \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_postmsg_to(wbd, \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")types_map[message_type], message_content);
     }
 
-    bool whiteboard_postmsg(int message_index, const char *message_content)
+    bool \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_postmsg(int message_index, const char *message_content)
     {
-        return postmsg(WBTypes(message_index), message_content);
+        return postmsg(\(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes(message_index), message_content);
     }
 
-    bool whiteboard_postmsg_to(gu_simple_whiteboard_descriptor *wbd, int message_index, const char *message_content)
+    bool \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")whiteboard_postmsg_to(gu_simple_whiteboard_descriptor *wbd, int message_index, const char *message_content)
     {
-        return postmsg(WBTypes(message_index), message_content, wbd);
+        return postmsg(\(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes(message_index), message_content, wbd);
     }
 } // extern C
 
@@ -117,19 +118,20 @@ static vector<int> strtointvec(string str)
 #pragma clang diagnostic ignored \"-Wglobal-constructors\"
 #pragma clang diagnostic ignored \"-Wexit-time-destructors\"
 
-whiteboard_types_map guWhiteboard::types_map; ///< global types map
+  whiteboard_types_map guWhiteboard::\(obj.useCustomNamespace ? obj.wbNamespace + "::" + obj.wbNamespace + "_" : "")types_map; ///< global types map
 
 #pragma clang diagnostic pop
 
 namespace guWhiteboard
-{
+{\(obj.useCustomNamespace ? "\nnamespace " + obj.wbNamespace + "\n{" : "")
     bool post(string message_type, string message_content, gu_simple_whiteboard_descriptor *wbd)
     {
-        return postmsg(types_map[message_type], message_content, wbd);
+      return postmsg(\(obj.useCustomNamespace ? obj.wbNamespace
+      + "_" : "")types_map[message_type], message_content, wbd);
     }
 
 
-    bool postmsg(WBTypes message_index, std::string message_content, gu_simple_whiteboard_descriptor *wbd)
+    bool postmsg(\(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes message_index, std::string message_content, gu_simple_whiteboard_descriptor *wbd)
     {
         switch (message_index)
         {
@@ -139,7 +141,7 @@ namespace guWhiteboard
         let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
         return """
 
-        case \(slotEnumName):
+        case \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(slotEnumName):
         {
         \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
             class \(WBPtrClass) msg_ptr(wbd);
@@ -169,16 +171,16 @@ namespace guWhiteboard
     return false;
 #pragma clang diagnostic pop
     }
-}
+\(obj.useCustomNamespace ? "}\n" : "")}
 
-whiteboard_types_map::whiteboard_types_map(): map<string, WBTypes>()
+whiteboard_types_map::whiteboard_types_map(): map<string, \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes>()
 {
     whiteboard_types_map &self = *this;
 
 \(classes.map { entry in 
         let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
         return """
-            self[\"\(entry.name.string)\"] = \(slotEnumName);
+            self[\"\(entry.name.string)\"] = \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(slotEnumName);
 
         """
         }.reduce("", +)

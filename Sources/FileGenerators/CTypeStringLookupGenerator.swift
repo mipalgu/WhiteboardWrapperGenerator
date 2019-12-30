@@ -25,19 +25,24 @@ final public class CTypeStringLookupGenerator: FileGenerator {
     }
 
     public func createContent(obj: T) -> String {
-        let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let headerName = (obj.useCustomNamespace ? obj.wbNamespace + "_" + self.name : self.name)
+        let copyright = FileGeneratorHelpers.createCopyright(fileName: headerName)
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: headerName) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         return """
 \(copyright)
+
+/** Auto-generated, don't modify! */
 
 \(ifDefTop)
 
 #include \"gusimplewhiteboard.h\"
 #include \"guwhiteboardtypelist_c_generated.h\"
 
-const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED] = 
+      const char *\(obj.useCustomNamespace ? obj.wbNamespace
+      + "_" : "")WBTypes_stringValues[\(obj.useCustomNamespace ? obj.wbNamespace.uppercased()
+      + "_" : "")GSW_NUM_TYPES_DEFINED] =
 {
 \(classes.map { entry in 
         return """
@@ -48,7 +53,9 @@ const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED] =
 )
 };
 
-const char *WBTypes_typeValues[GSW_NUM_TYPES_DEFINED] = 
+      const char *\(obj.useCustomNamespace ? obj.wbNamespace
+      + "_" : "")WBTypes_typeValues[\(obj.useCustomNamespace ? obj.wbNamespace.uppercased()
+      + "_" : "")GSW_NUM_TYPES_DEFINED] =
 {
 \(classes.map { entry in 
         return """

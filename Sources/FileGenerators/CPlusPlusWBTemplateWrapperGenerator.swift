@@ -25,12 +25,15 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
     }
 
     public func createContent(obj: T) -> String {
-        let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let headerName = (obj.useCustomNamespace ? obj.wbNamespace + "_" + self.name : self.name)
+        let copyright = FileGeneratorHelpers.createCopyright(fileName: headerName)
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: headerName) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         return """
 \(copyright)
+
+/** Auto-generated, don't modify! */
 
 \(ifDefTop)
 
@@ -42,7 +45,7 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 
 
 namespace guWhiteboard
-{
+{\(obj.useCustomNamespace ? "\nnamespace " + obj.wbNamespace + "\n{" : "")
 extern \"C\"
 {
 #include \"guwhiteboardtypelist_c_generated.h\"
@@ -58,10 +61,10 @@ extern \"C\"
             class \(templateClassName): public generic_whiteboard_object<\(templateDataType) > { 
                 public: 
                 /** Constructor: \(templateClassName) */ 
-                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
+                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(wbd, \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(slotEnumName), \(atomicString)) {}
                 \(entry.type.isCustomTypeClass ? "" : """
                     /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
-                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
+                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(value, \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(slotEnumName), wbd, \(atomicString)) {} 
                     """)
             };
 
@@ -69,7 +72,7 @@ extern \"C\"
         """
         }.reduce("", +)
 )
-}
+\(obj.useCustomNamespace ? "}\n" : "")}
 
 #pragma clang diagnostic pop
 

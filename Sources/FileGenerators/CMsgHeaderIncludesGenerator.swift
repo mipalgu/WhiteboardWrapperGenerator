@@ -34,6 +34,8 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
         return """
 \(copyright)
 
+/** Auto-generated, don't modify! */
+
 \(ifDefTop)
 
 #include <gusimplewhiteboard/guwhiteboard_c_types_manual_definitions.h>
@@ -41,7 +43,7 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
 \(customGenClasses.map { entry in 
         return """
 
-#include <typeClassDefs/\(NamingFuncs.createCStructName(entry.type)).h>
+#include <gusimplewhiteboard/typeClassDefs/\(NamingFuncs.createCStructName(entry.type)).h>
 """
         }.reduce("", +)
 )

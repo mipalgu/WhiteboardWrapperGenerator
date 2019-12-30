@@ -32,9 +32,9 @@ final public class CMsgDeserialiseGenerator: FileGenerator {
         return """
 \(copyright)
 
-\(ifDefTop)
-
 /** Auto-generated, don't modify! */
+
+\(ifDefTop)
 
 #define WHITEBOARD_DESERIALISER
 

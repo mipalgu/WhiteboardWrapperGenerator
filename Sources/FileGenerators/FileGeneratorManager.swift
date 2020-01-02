@@ -71,9 +71,7 @@ final public class FileGeneratorManager {
         var filePath = wbPath.appendingPathComponent("gusimplewhiteboard.c")
         // Need to make EOL separator cross-platform conformant.
         do {
-//          print("Processing:  gusimplewhiteboard.c")
           let guSWBCin : String = try String(contentsOf: filePath, encoding: .utf8)
-//          print("READ:  gusimplewhiteboard.c")
           var guSWBCLines = guSWBCin.components(separatedBy: "\n")
           for i in 0..<guSWBCLines.count {
             guSWBCLines[i] = guSWBCLines[i].replacingOccurrences(of: "< GSW_NUM_TYPES_DEFINED)", with: "< " + tsl.wbNamespace.uppercased() + "_GSW_NUM_TYPES_DEFINED)")
@@ -84,13 +82,10 @@ final public class FileGeneratorManager {
         } catch {
           print("Error:  Could not read gusimplewhiteboard.c in the custom WB build directory.")
         }
-//        print("DONE:  gusimplewhiteboard.c")
         filePath = wbPath.appendingPathComponent("guwhiteboardposter.h")
         // Need to make EOL separator cross-platform conformant.
         do {
-//          print("Processing:  guwhiteboardposter.h")
           let guSWBCin : String = try String(contentsOf: filePath, encoding: .utf8)
-//          print("READ:  guwhiteboardposter.h")
           var guSWBCLines = guSWBCin.components(separatedBy: "\n")
           var alreadyUpdated = false
           for i in 0..<guSWBCLines.count {
@@ -121,13 +116,10 @@ final public class FileGeneratorManager {
         } catch {
           print("Error:  Could not read guwhiteboardposter.h in the custom WB build directory.")
         }
-//        print("DONE:  guwhiteboardposter.h")
         filePath = wbPath.appendingPathComponent("guwhiteboardgetter.h")
         // Need to make EOL separator cross-platform conformant.
         do {
-//          print("Processing:  guwhiteboardgetter.h")
           let guSWBCin : String = try String(contentsOf: filePath, encoding: .utf8)
-//          print("READ:  guwhiteboardgetter.h")
           var guSWBCLines = guSWBCin.components(separatedBy: "\n")
           var alreadyUpdated = false
           for i in 0..<guSWBCLines.count {
@@ -155,13 +147,10 @@ final public class FileGeneratorManager {
         } catch {
           print("Error:  Could not read guwhiteboardgetter.h in the custom WB build directory.")
         }
-//        print("DONE:  guwhiteboardgetter.h")
         filePath = wbPath.appendingPathComponent("WBFunctor.h")
         // Need to make EOL separator cross-platform conformant.
         do {
-//          print("Processing:  WBFunctor.h")
           let guSWBCin : String = try String(contentsOf: filePath, encoding: .utf8)
-//          print("READ:  WBFunctor.h")
           var guSWBCLines = guSWBCin.components(separatedBy: "\n")
           for i in 0..<guSWBCLines.count {
             guSWBCLines[i] = guSWBCLines[i].replacingOccurrences(of: "#ifndef WBFUNCTOR_H", with: "#ifndef " + tsl.wbNamespace.uppercased() + "_WBFUNCTOR_H")
@@ -176,13 +165,10 @@ final public class FileGeneratorManager {
         } catch {
           print("Error:  Could not read WBFunctor.h in the custom WB build directory.")
         }
-//        print("DONE:  WBFunctor.h")
         filePath = wbPath.appendingPathComponent("guwhiteboardwatcher.h")
         // Need to make EOL separator cross-platform conformant.
         do {
-//          print("Processing:  guwhiteboardwatcher.h")
           let guSWBCin : String = try String(contentsOf: filePath, encoding: .utf8)
-//          print("READ:  guwhiteboardwatcher.h")
           var guSWBCLines = guSWBCin.components(separatedBy: "\n")
           for i in 0..<guSWBCLines.count {
             guSWBCLines[i] = guSWBCLines[i].replacingOccurrences(of: "#ifndef GENERIC_WB_WATCHER_H", with: "#ifndef " + tsl.wbNamespace.uppercased() + "_GENERIC_WB_WATCHER_H")
@@ -199,7 +185,6 @@ final public class FileGeneratorManager {
         } catch {
           print("Error:  Could not read guwhiteboardwatcher.h in the custom WB build directory.")
         }
-//        print("DONE:  guwhiteboardwatcher.h")
       }
     }
 }

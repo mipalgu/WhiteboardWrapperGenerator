@@ -58,13 +58,13 @@ extern \"C\"
         let atomicString = entry.atomic.value ? "true" : "false"
         return """
             /** WB Ptr Class: \(templateClassName) @brief \(entry.comment.string) */ 
-            class \(templateClassName): public \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) > { 
+            class \(templateClassName): public \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) > {
                 public: 
                 /** Constructor: \(templateClassName) */ 
                 \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
                 \(entry.type.isCustomTypeClass ? "" : """
                     /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
-                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
+                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {}
                     """)
             };
 

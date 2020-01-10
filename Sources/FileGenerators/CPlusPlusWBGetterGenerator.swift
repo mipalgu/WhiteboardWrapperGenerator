@@ -141,7 +141,7 @@ namespace guWhiteboard
 
       case \(obj.useCustomNamespace ? obj.wbNamespace + "::" + obj.wbNamespace + "_" : "")\(slotEnumName):
             {
-\(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
+\(entry.type.isCustomTypeClass ? "#ifdef  \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(CPlusPlusClassName)_DEFINED" : "")
           class \(obj.useCustomNamespace ? obj.wbNamespace + "::" : "")\(WBPtrClass) m(wbd);
                 return msg ? \(get_fromStringConverted) : \(getStringConverted);
 \(entry.type.isCustomTypeClass ? """

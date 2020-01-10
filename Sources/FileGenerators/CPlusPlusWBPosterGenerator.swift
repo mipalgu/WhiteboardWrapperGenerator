@@ -18,10 +18,12 @@ final public class CPlusPlusWBPosterGenerator: FileGenerator {
 
     public var name: String
     public var path: URL
+    public var config: Config
 
-    public init(path: URL) {
+    public init(path: URL, config: Config) {
         self.name = "guwhiteboardposter.cpp"
         self.path = path
+        self.config = config
     }
 
     func createParserForPrimitives(type: String, inputVarName: String) -> String {

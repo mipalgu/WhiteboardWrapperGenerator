@@ -7,14 +7,16 @@
  */                                                                     
 
 import Foundation
+import DataStructures
 
 public protocol FileGenerator {
 
     associatedtype T
     var name: String { get set }
     var path: URL { get set }
+    var config: Config { get set }
 
-    init(path: URL) 
+    init(path: URL, config: Config) 
 
     func createContent(obj: T) -> String
 

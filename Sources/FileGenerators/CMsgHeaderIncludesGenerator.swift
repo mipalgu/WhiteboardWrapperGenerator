@@ -18,10 +18,12 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
 
     public var name: String
     public var path: URL
+    public var config: Config
 
-    public init(path: URL) {
+    public init(path: URL, config: Config) {
         self.name = "guwhiteboard_c_types.h"
         self.path = path
+        self.config = config
     }
 
     public func createContent(obj: T) -> String {

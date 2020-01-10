@@ -18,10 +18,12 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 
     public var name: String
     public var path: URL
+    public var config: Config
 
-    public init(path: URL) {
+    public init(path: URL, config: Config) {
         self.name = "guwhiteboardtypelist_generated.h"
         self.path = path
+        self.config = config
     }
 
     public func createContent(obj: T) -> String {

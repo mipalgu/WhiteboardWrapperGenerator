@@ -14,6 +14,7 @@ import Protocols
 final public class FileGeneratorManager {
 
     var tsl: TSL
+    var config: Config
 
     var msgEnumHeaderGenerator: MsgEnumHeaderGenerator
 
@@ -30,22 +31,26 @@ final public class FileGeneratorManager {
 
     var cMsgHeaderIncludesGenerator: CMsgHeaderIncludesGenerator
 
-    public init(tsl: TSL, wbPath: URL) {
+    
+
+    public init(tsl: TSL, wbPath: URL, config: Config) {
         self.tsl = tsl
-        msgEnumHeaderGenerator = MsgEnumHeaderGenerator(path: wbPath)
+        self.config = config
+        msgEnumHeaderGenerator = MsgEnumHeaderGenerator(path: wbPath, config: config)
 
-        cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath)
-        cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath)
+        cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath, config: config)
+        cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath, config: config)
 
-        cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath)
-        cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath)
+        cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath, config: config)
+        cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath, config: config)
 
-        cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath)
-        cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath)
+        cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath, config: config)
+        cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath, config: config)
 
-        cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath)
+        cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath, config: config)
 
-        cMsgHeaderIncludesGenerator = CMsgHeaderIncludesGenerator(path: wbPath)
+        cMsgHeaderIncludesGenerator = CMsgHeaderIncludesGenerator(path: wbPath, config: config)
+
     }
 
     public func generate() {
@@ -63,6 +68,7 @@ final public class FileGeneratorManager {
         cTypeStringLookupGenerator.generate(from: tsl) 
 
         cMsgHeaderIncludesGenerator.generate(from: tsl) 
+
     }
 }
 

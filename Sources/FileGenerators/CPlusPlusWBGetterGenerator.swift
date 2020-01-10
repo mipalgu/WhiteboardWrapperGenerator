@@ -18,10 +18,12 @@ final public class CPlusPlusWBGetterGenerator: FileGenerator {
 
     public var name: String
     public var path: URL
+    public var config: Config
 
-    public init(path: URL) {
+    public init(path: URL, config: Config) {
         self.name = "guwhiteboardgetter.cpp"
         self.path = path
+        self.config = config
     }
 
     func createToString(type: MessageType, inputVarName: String) -> String {

@@ -104,7 +104,7 @@ if let error = container.error {
 
 //generate files
 if let tsl: TSL = container.object {
-    let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslPath)
+    let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslPath, config: config)
     fileGenerator.generate()
 }
 

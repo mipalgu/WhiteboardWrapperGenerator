@@ -30,13 +30,14 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
         let tsl: TSL = obj //alias
+        let wbNamePrefix = self.config.defaultWhiteboardName + "_"
         let classes: [TSLEntry] = tsl.entries
         return """
 \(copyright)
 
 \(ifDefTop)
 
-#include \"gugenericwhiteboardobject.h\"
+#include \"\(wbNamePrefix)gugenericwhiteboardobject.h\"
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored \"-Wpadded\"
@@ -57,13 +58,13 @@ extern \"C\"
         let atomicString = entry.atomic.value ? "true" : "false"
         return """
             /** WB Ptr Class: \(templateClassName) @brief \(entry.comment.string) */ 
-            class \(templateClassName): public generic_whiteboard_object<\(templateDataType) > { 
+            class \(templateClassName): public \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) > { 
                 public: 
                 /** Constructor: \(templateClassName) */ 
-                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
+                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
                 \(entry.type.isCustomTypeClass ? "" : """
                     /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
-                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
+                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {} 
                     """)
             };
 

@@ -31,6 +31,8 @@ final public class FileGeneratorManager {
 
     var cMsgHeaderIncludesGenerator: CMsgHeaderIncludesGenerator
 
+    var cPlusPlusCustomGenericWhiteboardObjectHeader: CPlusPlusCustomGenericWhiteboardObjectHeader
+    var cPlusPlusCustomGenericWhiteboardObjectImplementation: CPlusPlusCustomGenericWhiteboardObjectImplementation
     
 
     public init(tsl: TSL, wbPath: URL, config: Config) {
@@ -51,6 +53,8 @@ final public class FileGeneratorManager {
 
         cMsgHeaderIncludesGenerator = CMsgHeaderIncludesGenerator(path: wbPath, config: config)
 
+        cPlusPlusCustomGenericWhiteboardObjectHeader = CPlusPlusCustomGenericWhiteboardObjectHeader(path: wbPath, config: config)
+        cPlusPlusCustomGenericWhiteboardObjectImplementation = CPlusPlusCustomGenericWhiteboardObjectImplementation(path: wbPath, config: config)
     }
 
     public func generate() {
@@ -69,6 +73,8 @@ final public class FileGeneratorManager {
 
         cMsgHeaderIncludesGenerator.generate(from: tsl) 
 
+        cPlusPlusCustomGenericWhiteboardObjectHeader.generate(from: tsl)
+        cPlusPlusCustomGenericWhiteboardObjectImplementation.generate(from: tsl)
     }
 }
 

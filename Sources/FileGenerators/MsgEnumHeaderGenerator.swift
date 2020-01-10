@@ -25,14 +25,11 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
     }
 
     public func createContent(obj: T) -> String {
-        let headerName = (obj.useCustomNamespace ? obj.wbNamespace + "_" + self.name : self.name)
-        let copyright = FileGeneratorHelpers.createCopyright(fileName: headerName)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: headerName) 
+        let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
         let tsl: TSL = obj //alias
         return """
 \(copyright)
-
-/** Auto-generated, don't modify! */
 
 \(ifDefTop)
 
@@ -40,30 +37,30 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 
 #include \"gusimplewhiteboard.h\" //GSW_NUM_RESERVED
 
-#define \(obj.useCustomNamespace ? obj.wbNamespace.uppercased() + "_" : "")GSW_NUM_TYPES_DEFINED \(tsl.entries.count)
+#define GSW_NUM_TYPES_DEFINED \(tsl.entries.count)
 
-#if \(obj.useCustomNamespace ? obj.wbNamespace.uppercased() + "_" : "")GSW_NUM_TYPES_DEFINED > GSW_NUM_RESERVED
+#if GSW_NUM_TYPES_DEFINED > GSW_NUM_RESERVED
 #error *** Error: gusimplewhiteboard: The number of defined types exceeds the total number of reserved types allowed. Increase GSW_NUM_RESERVED to solve this.
 #endif
 
 /** All the message 'types' for the class based whiteboard */
-typedef enum \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")wb_types
+typedef enum wb_types
 {
 \(tsl.entries.dropLast().enumerated().map { elm in 
         let (i, e) = elm
-      return "    \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(NamingFuncs.createMsgEnumName(e.name.string)) = \(i), \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i), \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 \(tsl.entries.suffix(1).enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")\(NamingFuncs.createMsgEnumName(e.name.string)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 
-} \(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes; ///< All the message 'types' for the class based whiteboard 
+} WBTypes; ///< All the message 'types' for the class based whiteboard 
 
-extern const char *\(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes_stringValues[\(obj.useCustomNamespace ? obj.wbNamespace.uppercased() + "_" : "")GSW_NUM_TYPES_DEFINED];
-extern const char *\(obj.useCustomNamespace ? obj.wbNamespace + "_" : "")WBTypes_typeValues[\(obj.useCustomNamespace ? obj.wbNamespace.uppercased() + "_" : "")GSW_NUM_TYPES_DEFINED];
+extern const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED];
+extern const char *WBTypes_typeValues[GSW_NUM_TYPES_DEFINED];
 
 \(ifDefBottom)
 

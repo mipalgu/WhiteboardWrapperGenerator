@@ -1,10 +1,10 @@
-/**
+/**                                                                     
  *  /file main.swift
- *
- *  Created by Carl Lusty in 2018.
- *  Copyright (c) 2018 Carl Lusty
- *  All rights reserved.
- */
+ *                                                                      
+ *  Created by Carl Lusty in 2018.                                      
+ *  Copyright (c) 2018 Carl Lusty                                       
+ *  All rights reserved.                                                
+ */                                                                     
 
 import Foundation
 
@@ -14,86 +14,71 @@ import Parsers
 
 var configIncludePaths: [String] = []
 var tslNameFlag: String?
-var useCustomNamespace = false
-var customNamespace = ""
 
-#if CUSTOM_WB_NAME
-print("Custom name = \(CUSTOM_WB_NAME)")
-#endif
-let dic = ProcessInfo.processInfo.environment
-if dic["CUSTOM_WB_NAME"] != nil {
-  print("Custom name = \(dic["CUSTOM_WB_NAME"]!)")
-}
-while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:I:n:"), option != -1 {
-  switch UnicodeScalar(CUnsignedChar(option)) {
-  case "f":
-    tslNameFlag = String(cString: optarg)
-    print("""
+while case let option = getopt(CommandLine.argc, CommandLine.unsafeArgv, "f:P:I:"), option != -1 {
+    switch UnicodeScalar(CUnsignedChar(option)) {
+    case "f":
+        tslNameFlag = String(cString: optarg)
+        print("""
             Legacy option '-f':
                 This should be set in WhiteboardWrapperGenerator.config.
                 This will override the value in WhiteboardWrapperGenerator.config.
                 '-f' will be removed at some point.
             """)
-  case "I":
-    configIncludePaths.append(String(cString: optarg))
-  case "n":
-    print("WhiteboardWrapperGenerator is defining a CUSTOM_WB_NAMESPACE for the custom WB.\n- See the WANT_CUSTOM_WB_MONITOR and WANT_CUSTOM_WB_POSTER vars in the 'whiteboard_custom.mk' snippet for futher namespace related code manipulations.")
-    useCustomNamespace = true
-    customNamespace = String(cString: optarg)
-  case "P":
-    print("""
+    case "P":
+        print("""
             Legacy option '-P':
                 -P is depricated, please use -I instead.
                 They are functionally the same.
                 '-P' will be removed at some point.
             """)
-    configIncludePaths.append(String(cString: optarg))
-  default:
-    print("""
+        configIncludePaths.append(String(cString: optarg))
+    case "I":
+        configIncludePaths.append(String(cString: optarg))
+    default:
+        print("""
             Usage:
                 -f: Force .tsl file name, overriding configs (legacy).
-                -I: Add a path to look for config files in.
-                -n: Assign a namespce to this custom whiteboard.
                 -P: Add a path to look for config files in (legacy).
-
+                -I: Add a path to look for config files in.
             """)
-    exit(1)
-  }
+        exit(1)
+    }
 }
 
 if configIncludePaths.isEmpty {
-  configIncludePaths = ["../", "./", "../gusimplewhiteboard/"]
+    configIncludePaths = ["../", "./", "../gusimplewhiteboard/"]
 }
 
 let configName: String = "WhiteboardWrapper.config"
 
 //Load config
 guard let configURL = Config.findConfig(name: configName, paths: configIncludePaths) else {
-  print("""
-    Config Error:
-    Could not locate a '\(configName)' in the paths specified.
-    Creating a default version in the current directory.
-    Please move it to the same directory as the .tsl file.
-    Also, ensure that it is in the search paths.
-    """)
-  let newConfigPath: URL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-  let newConfigPathName: URL = newConfigPath.appendingPathComponent(configName)
-  guard Config().save(file: newConfigPathName) else {
     print("""
-      IO Error:
-      Could not save the file to: '\(newConfigPathName.path)'
-      """)
+        Config Error:
+            Could not locate a '\(configName)' in the paths specified.
+            Creating a default version in the current directory.
+            Please move it to the same directory as the .tsl file.
+            Also, ensure that it is in the search paths.
+        """)
+    let newConfigPath: URL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+    let newConfigPathName: URL = newConfigPath.appendingPathComponent(configName)
+    guard Config().save(file: newConfigPathName) else {
+        print("""
+        IO Error:
+            Could not save the file to: '\(newConfigPathName.path)'
+        """)
+        exit(1)
+    }
     exit(1)
-  }
-  exit(1)
 }
 
 guard let config = Config(file: configURL) else {
-  print("""
+    print("""
     Config Error:
-    Could not load config from '\(configURL.path)'.
+        Could not load config from '\(configURL.path)'.
     """)
-  exit(1)
+    exit(1)
 }
 
 //commandline config overrides
@@ -105,23 +90,21 @@ let tslURL: URL = tslPath.appendingPathComponent(tslName)
 let container = TSLParser.parse(tslFilePath: tslURL, config: config)
 
 for warning in container.warnings {
-  print("""
+    print("""
     warning: \(warning.toString())
     """)
 }
 
 if let error = container.error {
-  print("""
+    print("""
     error: \(error.toString())
     """)
-  exit(EXIT_FAILURE)
+    exit(EXIT_FAILURE)
 }
 
 //generate files
 if let tsl: TSL = container.object {
-  tsl.wbNamespace = customNamespace
-  tsl.useCustomNamespace = useCustomNamespace
-  let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslPath)
-  fileGenerator.generate()
-  fileGenerator.updateNongenerated(wbPath: tslPath)
+    let fileGenerator = FileGeneratorManager(tsl: tsl, wbPath: tslPath)
+    fileGenerator.generate()
 }
+

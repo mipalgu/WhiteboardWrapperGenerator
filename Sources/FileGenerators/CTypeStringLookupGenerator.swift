@@ -35,7 +35,10 @@ final public class CTypeStringLookupGenerator: FileGenerator {
 
 /** Auto-generated, don't modify! */
 
-\(ifDefTop)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-macros"
+
+        \(ifDefTop)
 
 #include \"gusimplewhiteboard.h\"
 #include \"guwhiteboardtypelist_c_generated.h\"
@@ -67,6 +70,8 @@ final public class CTypeStringLookupGenerator: FileGenerator {
 };
 
 \(ifDefBottom)
+
+#pragma clang diagnostic pop
 
 """
     }

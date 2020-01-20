@@ -34,6 +34,9 @@ final public class CMsgSerialiseGenerator: FileGenerator {
 
 /** Auto-generated, don't modify! */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-macros"
+
 \(ifDefTop)
 
 
@@ -82,6 +85,8 @@ int32_t serialisemsg(WBTypes message_index, const void *message_in, void *serial
 }
 
 \(ifDefBottom)
+
+#pragma clang diagnostic pop
 
 """
     }

@@ -36,6 +36,9 @@ final public class CMsgSerialiseGenerator: FileGenerator {
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-macros"
+#pragma clang diagnostic ignored "-Wcast-qual"
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#pragma clang diagnostic ignored "-Wunreachable-code-break"
 
 \(ifDefTop)
 

@@ -34,9 +34,16 @@ final public class CMsgSerialiseGenerator: FileGenerator {
         return """
 \(copyright)
 
+/** Auto-generated, don't modify! */
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-macros"
+#pragma clang diagnostic ignored "-Wcast-qual"
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#pragma clang diagnostic ignored "-Wunreachable-code-break"
+
 \(ifDefTop)
 
-/** Auto-generated, don't modify! */
 
 #define WHITEBOARD_SERIALISER
 
@@ -83,6 +90,8 @@ int32_t serialisemsg(WBTypes message_index, const void *message_in, void *serial
 }
 
 \(ifDefBottom)
+
+#pragma clang diagnostic pop
 
 """
     }

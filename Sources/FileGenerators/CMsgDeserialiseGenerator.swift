@@ -34,9 +34,15 @@ final public class CMsgDeserialiseGenerator: FileGenerator {
         return """
 \(copyright)
 
-\(ifDefTop)
-
 /** Auto-generated, don't modify! */
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-macros"
+#pragma clang diagnostic ignored "-Wcast-qual"
+#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+#pragma clang diagnostic ignored "-Wunreachable-code-break"
+
+\(ifDefTop)
 
 #define WHITEBOARD_DESERIALISER
 
@@ -83,6 +89,8 @@ int32_t deserialisemsg(WBTypes message_index, const void *serialised_in, void *m
 }
 
 \(ifDefBottom)
+
+#pragma clang diagnostic pop
 
 """
     }

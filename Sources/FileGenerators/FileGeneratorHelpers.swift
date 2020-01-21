@@ -17,7 +17,7 @@ final public class FileGeneratorHelpers {
          *  /file \(fileName)
          *
          *  Created by Carl Lusty in 2018.
-         *  Copyright (c) 2013-2018 Carl Lusty and Rene Hexel
+         *  Copyright (c) 2013-2020 Carl Lusty and Rene Hexel
          *  All rights reserved.
          */
         """

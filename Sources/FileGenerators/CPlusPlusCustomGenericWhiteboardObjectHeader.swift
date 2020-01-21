@@ -49,7 +49,7 @@ public:
     */
     \(wbNamePrefix)generic_whiteboard_object(gu_simple_whiteboard_descriptor *wbd, uint16_t toffs, bool want_atomic = true, bool do_notify_subscribers = true) : generic_whiteboard_object<object_type>(wbd, toffs, want_atomic, do_notify_subscribers)
     {
-
+        init(toffs, wbd, want_atomic, do_notify_subscribers);
     }
 
     /**
@@ -57,7 +57,8 @@ public:
     */
     \(wbNamePrefix)generic_whiteboard_object(const object_type &value, uint16_t toffs, gu_simple_whiteboard_descriptor *wbd = NULLPTR, bool want_atomic = true) : generic_whiteboard_object<object_type>(value, toffs, wbd, want_atomic)
     {
-
+        init(toffs, wbd, want_atomic);
+        this->set(value);
     }
 
     /**
@@ -70,10 +71,7 @@ public:
         {
             wbd = get_\(wbNamePrefix)singleton_whiteboard();
         }
-        this->type_offset = toffs;
-        this->atomic = want_atomic;
-        this->notify_subscribers = do_notify_subscribers;
-        this->_wbd = wbd;
+        generic_whiteboard_object<object_type>::init(toffs, wbd, want_atomic, do_notify_subscribers);
     }
 };
 

@@ -44,6 +44,11 @@ static void create_\(wbNamePrefix)singleton_whiteboard(void *)
 {
     const char *name = "\(self.config.defaultWhiteboardName)";
 
+#ifndef GSW_IOS_DEVICE
+    const char *env = getenv(GSW_DEFAULT_ENV);
+    if (env && *env) name = env;
+#endif
+
     \(wbNamePrefix)whiteboard_descriptor = gsw_new_whiteboard(name);
 }
 

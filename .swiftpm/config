@@ -1,0 +1,9 @@
+{
+  "object": [
+    {
+      "mirror": "ssh://git.mipal.net/git/whiteboard_helpers.git",
+      "original": "ssh://git@github.com/mipalgu/swift_helpers.git"
+    }
+  ],
+  "version": 1
+}

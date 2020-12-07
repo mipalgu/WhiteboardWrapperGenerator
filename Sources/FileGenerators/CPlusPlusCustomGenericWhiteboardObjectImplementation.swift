@@ -35,6 +35,7 @@ final public class CPlusPlusCustomGenericWhiteboardObjectImplementation : FileGe
 /** Auto-generated, don't modify! */
 
 #include "\(wbNamePrefix)gugenericwhiteboardobject.h"
+#include <stdlib.h>
 
 static void create_\(wbNamePrefix)singleton_whiteboard(void *);
 

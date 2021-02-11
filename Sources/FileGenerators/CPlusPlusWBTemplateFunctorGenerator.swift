@@ -58,7 +58,7 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
             \(msgFunctorName)(\(msgFunctorTemplate)* obj, void (\(msgFunctorTemplate)::*pFunc) (guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &), guWhiteboard::WBTypes t): WBFunctor<\(msgFunctorTemplate) >(obj, (void (\(msgFunctorTemplate)::*) (guWhiteboard::WBTypes, gu_simple_message*))pFunc, t) { }
         
             /** call method for callbacks, for class \(msgFunctorName) */
-            void call(gu_simple_message *m) {
+            void call(gu_simple_message *m) OVERRIDE {
                 \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) result = guWhiteboard::\(WBPtrClass)().get_from(m);
                 \(entry.name.string)_function_t funct((void (\(msgFunctorTemplate)::*)(guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &))WBFunctor<\(msgFunctorTemplate) >::get_s_func_ptr());
                 (WBFunctor<\(msgFunctorTemplate) >::fObject->*funct)(WBFunctor<\(msgFunctorTemplate) >::type_enum, result);

@@ -36,6 +36,8 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
 
 \(ifDefTop)
 
+#include <gu_util.h>
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored \"-Wpadded\"
 #pragma clang diagnostic ignored \"-Wold-style-cast\"

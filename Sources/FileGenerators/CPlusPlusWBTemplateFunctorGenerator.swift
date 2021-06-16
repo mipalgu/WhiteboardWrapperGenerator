@@ -51,7 +51,7 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
         let isCustom: Bool = entry.type.isCustomTypeClass
         return """
 
-        \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
+        \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName.uppercased())_DEFINED" : "")
         /** WBFunctor definition for \(msgFunctorTemplate) */ 
         template <typename \(msgFunctorTemplate) >
         class \(msgFunctorName): public WBFunctor<\(msgFunctorTemplate) > {
@@ -72,7 +72,7 @@ final public class CPlusPlusWBTemplateFunctorGenerator: FileGenerator {
             /** internal method of linking classes */
             static WBFunctorBase *bind(\(msgFunctorTemplate) *obj, void (\(msgFunctorTemplate)::*f)(guWhiteboard::WBTypes, \(isCustom ? "guWhiteboard::" : "")\(classNameOrPOD) &), guWhiteboard::WBTypes t) { return new \(msgFunctorName)<\(msgFunctorTemplate) >(obj, f, t); }
         }; 
-        \(entry.type.isCustomTypeClass ? "#endif //\(CPlusPlusClassName)_DEFINED" : "")
+        \(entry.type.isCustomTypeClass ? "#endif //\(CPlusPlusClassName.uppercased())_DEFINED" : "")
 
         """
         }.reduce("", +)

@@ -143,7 +143,7 @@ namespace guWhiteboard
 
         case \(slotEnumName):
         {
-        \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
+        \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName.uppercased())_DEFINED" : "")
             class \(WBPtrClass) msg_ptr(wbd);
             \(entry.type.isCustomTypeClass ? """
                 \(CPlusPlusClassName) v = msg_ptr.get();
@@ -156,7 +156,7 @@ namespace guWhiteboard
         \(entry.type.isCustomTypeClass ? """
             #else
                 return false;
-            #endif //\(CPlusPlusClassName)_DEFINED
+            #endif //\(CPlusPlusClassName.uppercased())_DEFINED
             """ : "")
         }
         """

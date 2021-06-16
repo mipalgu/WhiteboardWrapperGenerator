@@ -141,13 +141,13 @@ namespace guWhiteboard
 
             case \(slotEnumName):
             {
-\(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName)_DEFINED" : "")
+\(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName.uppercased())_DEFINED" : "")
                 class \(WBPtrClass) m(wbd);
                 return msg ? \(get_fromStringConverted) : \(getStringConverted);
 \(entry.type.isCustomTypeClass ? """
 #else
                 return \"##unsupported##\";
-#endif //\(CPlusPlusClassName)_DEFINED
+#endif //\(CPlusPlusClassName.uppercased())_DEFINED
 """ : "")
             }
 """

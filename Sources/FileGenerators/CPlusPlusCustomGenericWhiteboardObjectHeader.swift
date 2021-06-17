@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CPlusPlusCustomGenericWhiteboardObjectHeader : FileGenerator {
 
@@ -27,8 +28,9 @@ final public class CPlusPlusCustomGenericWhiteboardObjectHeader : FileGenerator 
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let wbNamePrefix = self.config.defaultWhiteboardName + "_"
+        let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
         return """
 \(copyright)
 
@@ -41,13 +43,13 @@ final public class CPlusPlusCustomGenericWhiteboardObjectHeader : FileGenerator 
 //Prototype for custom singleton whiteboard methods.
 gu_simple_whiteboard_descriptor *get_\(wbNamePrefix)singleton_whiteboard(void);
 
-template <class object_type> class \(wbNamePrefix)generic_whiteboard_object : public generic_whiteboard_object<object_type>
+template <class object_type> class \(cns)_generic_whiteboard_object : public generic_whiteboard_object<object_type>
 {
 public:
     /**                                                                                                                   
      * designated constructor
     */
-    \(wbNamePrefix)generic_whiteboard_object(gu_simple_whiteboard_descriptor *wbd, uint16_t toffs, bool want_atomic = true, bool do_notify_subscribers = true) : generic_whiteboard_object<object_type>(wbd, toffs, want_atomic, do_notify_subscribers)
+    \(cns)_generic_whiteboard_object(gu_simple_whiteboard_descriptor *wbd, uint16_t toffs, bool want_atomic = true, bool do_notify_subscribers = true) : generic_whiteboard_object<object_type>(wbd, toffs, want_atomic, do_notify_subscribers)
     {
         init(toffs, wbd, want_atomic, do_notify_subscribers);
     }
@@ -55,7 +57,7 @@ public:
     /**
      * value conversion reference constructor
     */
-    \(wbNamePrefix)generic_whiteboard_object(const object_type &value, uint16_t toffs, gu_simple_whiteboard_descriptor *wbd = NULLPTR, bool want_atomic = true) : generic_whiteboard_object<object_type>(value, toffs, wbd, want_atomic)
+    \(cns)_generic_whiteboard_object(const object_type &value, uint16_t toffs, gu_simple_whiteboard_descriptor *wbd = NULLPTR, bool want_atomic = true) : generic_whiteboard_object<object_type>(value, toffs, wbd, want_atomic)
     {
         init(toffs, wbd, want_atomic);
         this->set(value);

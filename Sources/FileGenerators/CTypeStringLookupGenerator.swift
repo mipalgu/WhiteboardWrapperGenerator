@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CTypeStringLookupGenerator: FileGenerator {
 
@@ -28,9 +29,10 @@ final public class CTypeStringLookupGenerator: FileGenerator {
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
+        let ntd = WhiteboardHelpers().createDefName(forClassNamed: "NUM_TYPES_DEFINED", namespaces: config.cNamespaces)
         return """
 \(copyright)
 
@@ -44,7 +46,7 @@ final public class CTypeStringLookupGenerator: FileGenerator {
 #include \"gusimplewhiteboard.h\"
 #include \"guwhiteboardtypelist_c_generated.h\"
 
-const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED] = 
+const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues[\(ntd)] = 
 {
 \(classes.map { entry in 
         return """
@@ -55,12 +57,12 @@ const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED] =
 )
 };
 
-const char *WBTypes_typeValues[GSW_NUM_TYPES_DEFINED] = 
+const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_typeValues[\(ntd)] = 
 {
 \(classes.map { entry in 
         return """
 
-        \"\(NamingFuncs.createCStructName(entry.type))\",
+        \"\(NamingFuncs.createCStructName(entry.type, config: config))\",
 """
         }.reduce("", +).dropLast()
 )

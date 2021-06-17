@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CPlusPlusWBPosterGenerator: FileGenerator {
 
@@ -55,6 +56,8 @@ final public class CPlusPlusWBPosterGenerator: FileGenerator {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
+        let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
+        let cppns = WhiteboardHelpers().cppNamespace(of: config.cppNamespaces)
         return """
 \(copyright)
 
@@ -64,17 +67,20 @@ final public class CPlusPlusWBPosterGenerator: FileGenerator {
 #include <vector>
 #include <cstdlib>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored \"-Wunused-macros\"
 #define WHITEBOARD_POSTER_STRING_CONVERSION
+#pragma clang diagnostic pop
 
 #include \"guwhiteboardtypelist_generated.h\"
 #include \"guwhiteboardposter.h\"
 
 using namespace std;
-using namespace guWhiteboard;
+using namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces));
 
 extern \"C\"
 {
-    WBTypes whiteboard_type_for_message_named(const char *message_type)
+    \(cns)_types whiteboard_type_for_message_named(const char *message_type)
     {
         return types_map[message_type];
     }
@@ -91,12 +97,12 @@ extern \"C\"
 
     bool whiteboard_postmsg(int message_index, const char *message_content)
     {
-        return postmsg(WBTypes(message_index), message_content);
+        return postmsg(\(cns)_types(message_index), message_content);
     }
 
     bool whiteboard_postmsg_to(gu_simple_whiteboard_descriptor *wbd, int message_index, const char *message_content)
     {
-        return postmsg(WBTypes(message_index), message_content, wbd);
+        return postmsg(\(cns)_types(message_index), message_content, wbd);
     }
 } // extern C
 
@@ -119,11 +125,11 @@ static vector<int> strtointvec(string str)
 #pragma clang diagnostic ignored \"-Wglobal-constructors\"
 #pragma clang diagnostic ignored \"-Wexit-time-destructors\"
 
-whiteboard_types_map guWhiteboard::types_map; ///< global types map
+whiteboard_types_map \(cppns)::types_map; ///< global types map
 
 #pragma clang diagnostic pop
 
-namespace guWhiteboard
+namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
 {
     bool post(string message_type, string message_content, gu_simple_whiteboard_descriptor *wbd)
     {
@@ -131,14 +137,14 @@ namespace guWhiteboard
     }
 
 
-    bool postmsg(WBTypes message_index, std::string message_content, gu_simple_whiteboard_descriptor *wbd)
+    bool postmsg(\(cns)_types message_index, std::string message_content, gu_simple_whiteboard_descriptor *wbd)
     {
         switch (message_index)
         {
 \(classes.map { entry in 
-        let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type)
-        let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type, config: config)
+        let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
         return """
 
         case \(slotEnumName):
@@ -173,12 +179,12 @@ namespace guWhiteboard
     }
 }
 
-whiteboard_types_map::whiteboard_types_map(): map<string, WBTypes>()
+whiteboard_types_map::whiteboard_types_map(): map<string, \(cns)_types>()
 {
     whiteboard_types_map &self = *this;
 
 \(classes.map { entry in 
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
         return """
             self[\"\(entry.name.string)\"] = \(slotEnumName);
 

@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class MsgEnumHeaderGenerator: FileGenerator {
 
@@ -28,8 +29,9 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let tsl: TSL = obj //alias
+        let ntd = WhiteboardHelpers().createDefName(forClassNamed: "NUM_TYPES_DEFINED", namespaces: config.cNamespaces)
         return """
 \(copyright)
 
@@ -39,30 +41,29 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 
 #include \"gusimplewhiteboard.h\" //GSW_NUM_RESERVED
 
-#define GSW_NUM_TYPES_DEFINED \(tsl.entries.count)
+#define \(ntd) \(tsl.entries.count)
 
-#if GSW_NUM_TYPES_DEFINED > GSW_NUM_RESERVED
+#if \(ntd) > GSW_NUM_RESERVED
 #error *** Error: gusimplewhiteboard: The number of defined types exceeds the total number of reserved types allowed. Increase GSW_NUM_RESERVED to solve this.
 #endif
 
 /** All the message 'types' for the class based whiteboard */
-typedef enum wb_types
+typedef enum \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 {
 \(tsl.entries.dropLast().enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i), \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) = \(i), \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 \(tsl.entries.suffix(1).enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(NamingFuncs.createMsgEnumName(e.name.string)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 
-} WBTypes; ///< All the message 'types' for the class based whiteboard 
-
-extern const char *WBTypes_stringValues[GSW_NUM_TYPES_DEFINED];
-extern const char *WBTypes_typeValues[GSW_NUM_TYPES_DEFINED];
+} \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types; ///< All the message 'types' for the class based whiteboard 
+extern const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues[\(ntd)];
+extern const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_typeValues[\(ntd)];
 
 \(ifDefBottom)
 

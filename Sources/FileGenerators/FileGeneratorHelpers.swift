@@ -8,6 +8,7 @@
                                                         
 import Foundation
 import NamingFuncs 
+import DataStructures
 
 final public class FileGeneratorHelpers {
 
@@ -23,8 +24,8 @@ final public class FileGeneratorHelpers {
         """
     }
 
-    public static func createIfDefWrapper(fileName: String) -> (String, String) {
-        let defineName: String = NamingFuncs.createIfDefName(fileName: fileName)
+    public static func createIfDefWrapper(fileName: String, config: Config) -> (String, String) {
+        let defineName: String = NamingFuncs.createIfDefName(fileName: fileName, config: config)
         return (createIfDefTop(defineName: defineName), 
                 createIfDefBottom(defineName: defineName))
     }

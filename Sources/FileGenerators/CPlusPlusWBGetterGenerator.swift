@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CPlusPlusWBGetterGenerator: FileGenerator {
 
@@ -64,17 +65,22 @@ final public class CPlusPlusWBGetterGenerator: FileGenerator {
 /** Auto-generated, don't modify! */
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <cstdlib>
 #include <gu_util.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored \"-Wunused-macros\"
 #define WHITEBOARD_POSTER_STRING_CONVERSION
+#pragma clang diagnostic pop
 
 #include \"guwhiteboardtypelist_generated.h\"
 #include \"guwhiteboardgetter.h\"
 
 using namespace std;
-using namespace guWhiteboard;
+using namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces));
+
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored \"-Wunused-parameter\"
@@ -92,12 +98,12 @@ extern \"C\"
 
     char *whiteboard_getmsg(int message_index, gu_simple_message *msg)
     {
-        return gu_strdup(getmsg(WBTypes(message_index), msg).c_str());
+        return gu_strdup(getmsg(\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types(message_index), msg).c_str());
     }
 
     char *whiteboard_getmsg_from(gu_simple_whiteboard_descriptor *wbd, int message_index)
     {
-        return gu_strdup(getmsg(WBTypes(message_index), NULLPTR, wbd).c_str());
+        return gu_strdup(getmsg(\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types(message_index), NULLPTR, wbd).c_str());
     }
 } // extern C
 
@@ -120,21 +126,21 @@ static string intvectostring(const vector<int> &vec)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored \"-Wunused-parameter\"
 #pragma clang diagnostic ignored \"-Wunreachable-code\"
-namespace guWhiteboard
+namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
 {
     string getmsg(string message_type, gu_simple_message *msg, gu_simple_whiteboard_descriptor *wbd)
     {
         return getmsg(types_map[message_type], msg, wbd);
     }
 
-    string getmsg(WBTypes message_index, gu_simple_message *msg, gu_simple_whiteboard_descriptor *wbd)
+    string getmsg(\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types message_index, gu_simple_message *msg, gu_simple_whiteboard_descriptor *wbd)
     {
         switch (message_index)
         {
 \(classes.map { entry in 
-        let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type)
-        let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type, config: config)
+        let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
         let get_fromStringConverted: String = createToString(type: entry.type, inputVarName: "m.get_from(msg)")
         let getStringConverted: String = createToString(type: entry.type, inputVarName: "m.get()")
         return """

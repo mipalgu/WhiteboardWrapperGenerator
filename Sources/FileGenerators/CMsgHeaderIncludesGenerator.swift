@@ -28,7 +28,7 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         let customClasses: [TSLEntry] = classes.filter { $0.type.isCustomTypeClass }
@@ -43,7 +43,7 @@ final public class CMsgHeaderIncludesGenerator: FileGenerator {
 \(customGenClasses.map { entry in 
         return """
 
-#include <typeClassDefs/\(NamingFuncs.createCStructName(entry.type)).h>
+#include <typeClassDefs/\(NamingFuncs.createCStructName(entry.type, config: config)).h>
 """
         }.reduce("", +)
 )

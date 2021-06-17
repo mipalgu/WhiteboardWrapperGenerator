@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CPlusPlusCustomGenericWhiteboardObjectImplementation : FileGenerator {
 

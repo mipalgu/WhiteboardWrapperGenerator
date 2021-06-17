@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CMsgDeserialiseGenerator: FileGenerator {
 
@@ -28,7 +29,7 @@ final public class CMsgDeserialiseGenerator: FileGenerator {
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let tsl: TSL = obj //alias
         let classes: [TSLEntry] = tsl.entries
         return """
@@ -54,14 +55,14 @@ final public class CMsgDeserialiseGenerator: FileGenerator {
 #include \"guwhiteboardserialisation.h\"
 #include \"guwhiteboard_c_types.h\"
 
-int32_t deserialisemsg(WBTypes message_index, const void *serialised_in, void *message_out)
+int32_t deserialisemsg(\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types message_index, const void *serialised_in, void *message_out)
 {
     switch (message_index)
     {
 \(classes.map { entry in 
-        let isGenerated = NamingFuncs.createWasClassGeneratedFlag(entry.type)
-        let cStructName = NamingFuncs.createClassGeneratorCStructFlag(entry.type)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let isGenerated = NamingFuncs.createWasClassGeneratedFlag(entry.type, config: config)
+        let cStructName = NamingFuncs.createClassGeneratorCStructFlag(entry.type, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
         return """
 
             case \(slotEnumName):

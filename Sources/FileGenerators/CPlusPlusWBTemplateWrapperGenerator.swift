@@ -11,6 +11,7 @@ import Foundation
 import DataStructures
 import Protocols
 import NamingFuncs
+import whiteboard_helpers
 
 final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 
@@ -28,10 +29,10 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
-        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name) 
+        let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let tsl: TSL = obj //alias
-        let wbNamePrefix = self.config.defaultWhiteboardName + "_"
         let classes: [TSLEntry] = tsl.entries
+        let wbNamePrefix = self.config.defaultWhiteboardName + "_"
         return """
 \(copyright)
 
@@ -44,7 +45,7 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 #pragma clang diagnostic ignored \"-Wc++98-compat\"
 
 
-namespace guWhiteboard
+namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
 {
 extern \"C\"
 {
@@ -52,19 +53,20 @@ extern \"C\"
 }
 
 \(classes.map { entry in 
-        let templateDataType = NamingFuncs.createCPlusPlusTemplateDataType(entry.type)
-        let templateClassName = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string)
+        let templateDataType = NamingFuncs.createCPlusPlusTemplateDataType(entry.type, config: config)
+        let templateClassName = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
         let atomicString = entry.atomic.value ? "true" : "false"
+        let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
         return """
             /** WB Ptr Class: \(templateClassName) @brief \(entry.comment.string) */ 
-            class \(templateClassName): public \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) > {
+            class \(templateClassName): public  \(cns)_generic_whiteboard_object<\(templateDataType) > {
                 public: 
                 /** Constructor: \(templateClassName) */ 
-                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
+                \(templateClassName)(gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(cns)_generic_whiteboard_object<\(templateDataType) >(wbd, \(slotEnumName), \(atomicString)) {}
                 \(entry.type.isCustomTypeClass ? "" : """
                     /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
-                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(wbNamePrefix)generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {}
+                    \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(cns)_generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {}
                     """)
             };
 

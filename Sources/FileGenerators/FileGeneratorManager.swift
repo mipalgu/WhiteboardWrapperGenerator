@@ -22,7 +22,9 @@ final public class FileGeneratorManager {
     var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
 
     var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
+    var cPlusPlusWBPosterHeaderGenerator: CPlusPlusWBPosterHeaderGenerator
     var cPlusPlusWBGetterGenerator: CPlusPlusWBGetterGenerator
+    var cPlusPlusWBGetterHeaderGenerator: CPlusPlusWBGetterHeaderGenerator
 
     var cMsgSerialiseGenerator: CMsgSerialiseGenerator
     var cMsgDeserialiseGenerator: CMsgDeserialiseGenerator
@@ -44,7 +46,9 @@ final public class FileGeneratorManager {
         cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath, config: config)
 
         cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath, config: config)
+        cPlusPlusWBPosterHeaderGenerator = CPlusPlusWBPosterHeaderGenerator(path: wbPath, config: config)
         cPlusPlusWBGetterGenerator = CPlusPlusWBGetterGenerator(path: wbPath, config: config)
+        cPlusPlusWBGetterHeaderGenerator = CPlusPlusWBGetterHeaderGenerator(path: wbPath, config: config)
 
         cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath, config: config)
         cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath, config: config)
@@ -64,7 +68,9 @@ final public class FileGeneratorManager {
         cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
 
         cPlusPlusWBPosterGenerator.generate(from: tsl) 
+        cPlusPlusWBPosterHeaderGenerator.generate(from: tsl) 
         cPlusPlusWBGetterGenerator.generate(from: tsl) 
+        cPlusPlusWBGetterHeaderGenerator.generate(from: tsl) 
 
         cMsgSerialiseGenerator.generate(from: tsl) 
         cMsgDeserialiseGenerator.generate(from: tsl) 

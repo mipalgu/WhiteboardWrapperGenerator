@@ -37,6 +37,7 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 
 \(ifDefTop)
 
+#undef WANT_WB_STRINGS
 #define WANT_WB_STRINGS
 
 #include \"gusimplewhiteboard.h\" //GSW_NUM_RESERVED

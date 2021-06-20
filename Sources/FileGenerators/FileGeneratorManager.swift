@@ -28,6 +28,7 @@ final public class FileGeneratorManager {
 
     var cMsgSerialiseGenerator: CMsgSerialiseGenerator
     var cMsgDeserialiseGenerator: CMsgDeserialiseGenerator
+    var cMsgSerialisationHeaderGenerator: CMsgSerialisationHeaderGenerator 
 
     var cTypeStringLookupGenerator: CTypeStringLookupGenerator
 
@@ -52,6 +53,7 @@ final public class FileGeneratorManager {
 
         cMsgSerialiseGenerator = CMsgSerialiseGenerator(path: wbPath, config: config)
         cMsgDeserialiseGenerator = CMsgDeserialiseGenerator(path: wbPath, config: config)
+        cMsgSerialisationHeaderGenerator = CMsgSerialisationHeaderGenerator(path: wbPath, config: config)
 
         cTypeStringLookupGenerator = CTypeStringLookupGenerator(path: wbPath, config: config)
 
@@ -73,7 +75,8 @@ final public class FileGeneratorManager {
         cPlusPlusWBGetterHeaderGenerator.generate(from: tsl) 
 
         cMsgSerialiseGenerator.generate(from: tsl) 
-        cMsgDeserialiseGenerator.generate(from: tsl) 
+        cMsgDeserialiseGenerator.generate(from: tsl)
+        cMsgSerialisationHeaderGenerator.generate(from: tsl)
 
         cTypeStringLookupGenerator.generate(from: tsl) 
 

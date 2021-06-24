@@ -63,6 +63,11 @@ typedef enum \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 )
 
 } \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types; ///< All the message 'types' for the class based whiteboard 
+#ifndef WBTypes_DEFINED
+#define WBTypes_DEFINED
+typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
+#endif
+
 extern const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues[\(ntd)];
 extern const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_typeValues[\(ntd)];
 

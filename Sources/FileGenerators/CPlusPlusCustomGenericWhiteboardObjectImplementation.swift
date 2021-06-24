@@ -29,6 +29,7 @@ final public class CPlusPlusCustomGenericWhiteboardObjectImplementation : FileGe
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let wbNamePrefix = self.config.defaultWhiteboardName + "_"
+        let ntd = WhiteboardHelpers().createDefName(forClassNamed: "NUM_TYPES_DEFINED", namespaces: config.cNamespaces)
         return """
 \(copyright)
 
@@ -36,6 +37,8 @@ final public class CPlusPlusCustomGenericWhiteboardObjectImplementation : FileGe
 /** Auto-generated, don't modify! */
 
 #include "\(wbNamePrefix)gugenericwhiteboardobject.h"
+#include "guwhiteboardtypelist_c_generated.h"
+
 #include <stdlib.h>
 
 static void create_\(wbNamePrefix)singleton_whiteboard(void *);
@@ -51,7 +54,15 @@ static void create_\(wbNamePrefix)singleton_whiteboard(void *)
     if (env && *env) name = env;
 #endif
 
-    \(wbNamePrefix)whiteboard_descriptor = gsw_new_whiteboard(name);
+//taken from gusimplewhiteboard.c, should we make this from a hash of the whiteboard name?
+#define SEMAPHORE_MAGIC_KEY     4242
+
+    \(wbNamePrefix)whiteboard_descriptor = gsw_new_custom_whiteboard(
+        name, 
+        \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues,
+        \(ntd),
+        SEMAPHORE_MAGIC_KEY
+    );
 }
 
 gu_simple_whiteboard_descriptor *get_\(wbNamePrefix)singleton_whiteboard(void)

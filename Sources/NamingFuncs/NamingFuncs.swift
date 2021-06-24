@@ -50,7 +50,7 @@ final public class NamingFuncs {
     }
 
     public static func createMsgEnumName(_ name: String, config: Config) -> String {
-        return "k_\(name)_v"
+        return "k\(name)_v"
     }
 
     public static func createCPlusPlusTemplateClassName(_ msgSlotName: String, config: Config) -> String {

@@ -50,8 +50,7 @@ final public class NamingFuncs {
     }
 
     public static func createMsgEnumName(_ name: String, config: Config) -> String {
-        let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
-        return "k\(cns)_\(name)_v"
+        return "k_\(name)_v"
     }
 
     public static func createCPlusPlusTemplateClassName(_ msgSlotName: String, config: Config) -> String {

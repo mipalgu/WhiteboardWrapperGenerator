@@ -77,8 +77,7 @@ char *whiteboard_getmsg_from(gu_simple_whiteboard_descriptor *wbd, int message_i
 #ifdef __cplusplus
 } // extern "C"
 
-namespace \(cppns)
-{
+\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
         /**
          * A generic C++ function that gets a string from the whiteboard.
          * Both the message type and the message content are strings.
@@ -98,7 +97,8 @@ namespace \(cppns)
          * @return the pretty printed data string
          */
         std::string getmsg(\(cppns)::\(cns)_types message_index, gu_simple_message *msg = NULLPTR, gu_simple_whiteboard_descriptor *wbd = NULLPTR);
-}
+
+\(config.cppNamespaces.reversed().map({ "} // " + $0 + "\n" }).joined(separator: ""))
 #endif // __cplusplus
 
 \(ifDefBottom)

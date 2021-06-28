@@ -126,8 +126,7 @@ static string intvectostring(const vector<int> &vec)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored \"-Wunused-parameter\"
 #pragma clang diagnostic ignored \"-Wunreachable-code\"
-namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
-{
+\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
     string getmsg(string message_type, gu_simple_message *msg, gu_simple_whiteboard_descriptor *wbd)
     {
         return getmsg(types_map[message_type], msg, wbd);
@@ -168,7 +167,7 @@ namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
     }
 #pragma clang diagnostic pop
 #pragma clang diagnostic pop
-}
+\(config.cppNamespaces.reversed().map({ "} // " + $0 + "\n" }).joined(separator: ""))
 
 """
     }

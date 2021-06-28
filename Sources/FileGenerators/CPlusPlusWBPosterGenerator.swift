@@ -129,8 +129,7 @@ whiteboard_types_map \(cppns)::types_map; ///< global types map
 
 #pragma clang diagnostic pop
 
-namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
-{
+\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
     bool post(string message_type, string message_content, gu_simple_whiteboard_descriptor *wbd)
     {
         return postmsg(types_map[message_type], message_content, wbd);
@@ -192,7 +191,7 @@ whiteboard_types_map::whiteboard_types_map(): map<string, \(cns)_types>()
         }.reduce("", +)
 )
     (void) self;
-}
+\(config.cppNamespaces.reversed().map({ "} // " + $0 + "\n" }).joined(separator: ""))
 
 """
     }

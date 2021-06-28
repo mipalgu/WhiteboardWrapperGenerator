@@ -46,6 +46,12 @@ final public class CTypeStringLookupGenerator: FileGenerator {
 #include \"gusimplewhiteboard.h\"
 #include \"guwhiteboardtypelist_c_generated.h\"
 
+//Hack for WBTypes_stringValues extern
+#ifndef BUILD_WB_LIBRARY
+int num_types_defined = \(ntd);
+const char **WBTypes_stringValues = \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues;
+#endif
+
 const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues[\(ntd)] = 
 {
 \(classes.map { entry in 

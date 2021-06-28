@@ -53,7 +53,7 @@ typedef enum \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 {
 \(tsl.entries.dropLast().enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) = \(i), \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config)) = \(i), \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 \(tsl.entries.suffix(1).enumerated().map { elm in 
@@ -67,6 +67,12 @@ typedef enum \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 #define WBTypes_DEFINED
 typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
 #endif
+
+\(tsl.entries.enumerated().map { elm in
+        let (_, e) = elm
+        return "#define \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config))\n"
+        }.reduce("", +)
+)
 
 extern const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues[\(ntd)];
 extern const char *\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_typeValues[\(ntd)];

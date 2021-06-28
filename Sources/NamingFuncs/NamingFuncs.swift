@@ -49,6 +49,11 @@ final public class NamingFuncs {
         }
     }
 
+    public static func createMsgEnumNameNamespaced(_ name: String, config: Config) -> String {
+        let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
+        return "k\(cns)_\(name)_v"
+    }
+
     public static func createMsgEnumName(_ name: String, config: Config) -> String {
         return "k\(name)_v"
     }

@@ -44,6 +44,7 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 #pragma clang diagnostic ignored \"-Wpadded\"
 #pragma clang diagnostic ignored \"-Wc++98-compat\"
 
+#define CPP_WHITEBOARD_NAMESPACE \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
 
 \(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
 

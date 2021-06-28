@@ -44,6 +44,8 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 
 #define \(ntd) \(tsl.entries.count)
 
+#define C_WHITEBOARD_NAMESPACE \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))
+
 #if \(ntd) > GSW_NUM_RESERVED
 #error *** Error: gusimplewhiteboard: The number of defined types exceeds the total number of reserved types allowed. Increase GSW_NUM_RESERVED to solve this.
 #endif

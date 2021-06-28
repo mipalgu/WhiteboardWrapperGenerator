@@ -20,6 +20,8 @@ final public class FileGeneratorManager {
 
     var cPlusPlusWBTemplateWrapperGenerator: CPlusPlusWBTemplateWrapperGenerator
     var cPlusPlusWBTemplateFunctorGenerator: CPlusPlusWBTemplateFunctorGenerator
+    var cPlusPlusWBFunctorGenerator: CPlusPlusWBFunctorGenerator
+    
 
     var cPlusPlusWBPosterGenerator: CPlusPlusWBPosterGenerator
     var cPlusPlusWBPosterHeaderGenerator: CPlusPlusWBPosterHeaderGenerator
@@ -45,6 +47,8 @@ final public class FileGeneratorManager {
 
         cPlusPlusWBTemplateWrapperGenerator = CPlusPlusWBTemplateWrapperGenerator(path: wbPath, config: config)
         cPlusPlusWBTemplateFunctorGenerator = CPlusPlusWBTemplateFunctorGenerator(path: wbPath, config: config)
+        cPlusPlusWBFunctorGenerator = CPlusPlusWBFunctorGenerator(path: wbPath, config: config)
+
 
         cPlusPlusWBPosterGenerator = CPlusPlusWBPosterGenerator(path: wbPath, config: config)
         cPlusPlusWBPosterHeaderGenerator = CPlusPlusWBPosterHeaderGenerator(path: wbPath, config: config)
@@ -68,6 +72,7 @@ final public class FileGeneratorManager {
 
         cPlusPlusWBTemplateWrapperGenerator.generate(from: tsl) 
         cPlusPlusWBTemplateFunctorGenerator.generate(from: tsl) 
+        cPlusPlusWBFunctorGenerator.generate(from: tsl) 
 
         cPlusPlusWBPosterGenerator.generate(from: tsl) 
         cPlusPlusWBPosterHeaderGenerator.generate(from: tsl) 

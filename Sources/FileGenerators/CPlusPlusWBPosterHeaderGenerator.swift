@@ -88,8 +88,7 @@ int whiteboard_type_for_message_named(const char *message_type);
 \(cppns)::\(cns)_types whiteboard_type_for_message_named(const char *message_type);
 }
 
-namespace \(cppns)
-{
+\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
         /**
          * A generic C++ function that posts to the whiteboard.
          * Both the message type and the message content are strings.
@@ -122,7 +121,7 @@ namespace \(cppns)
          * Global map from names to message types
          */
         extern struct whiteboard_types_map types_map;
-}
+\(config.cppNamespaces.reversed().map({ "} // " + $0 + "\n" }).joined(separator: ""))
 #endif // __cplusplus
 
 \(ifDefBottom)

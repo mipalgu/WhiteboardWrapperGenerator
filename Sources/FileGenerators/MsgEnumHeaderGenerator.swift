@@ -60,7 +60,7 @@ typedef enum \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 )
 \(tsl.entries.suffix(1).enumerated().map { elm in 
         let (i, e) = elm
-        return "    \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
+        return "    \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config)) = \(i + tsl.entries.dropLast().count) \t\t///< \(e.comment.string)\n"
         }.reduce("", +)
 )
 

@@ -45,8 +45,8 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 #pragma clang diagnostic ignored \"-Wc++98-compat\"
 
 
-namespace \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
-{
+\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
+
 extern \"C\"
 {
 #include \"guwhiteboardtypelist_c_generated.h\"
@@ -74,7 +74,8 @@ extern \"C\"
         """
         }.reduce("", +)
 )
-}
+
+\(config.cppNamespaces.reversed().map({ "} // " + $0 + "\n" }).joined(separator: ""))
 
 #pragma clang diagnostic pop
 

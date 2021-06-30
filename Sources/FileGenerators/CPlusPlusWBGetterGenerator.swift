@@ -146,13 +146,13 @@ static string intvectostring(const vector<int> &vec)
 
             case \(slotEnumName):
             {
-\(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName.uppercased())_DEFINED" : "")
+\(entry.type.isCustomTypeClass ? "#ifdef \(WhiteboardHelpers().cppDefinedDef(forClassNamed: CPlusPlusClassName, namespaces: config.cppNamespaces))" : "")
                 class \(WBPtrClass) m(wbd);
                 return msg ? \(get_fromStringConverted) : \(getStringConverted);
 \(entry.type.isCustomTypeClass ? """
 #else
                 return \"##unsupported##\";
-#endif //\(CPlusPlusClassName.uppercased())_DEFINED
+#endif //\(WhiteboardHelpers().cppDefinedDef(forClassNamed: CPlusPlusClassName, namespaces: config.cppNamespaces))
 """ : "")
             }
 """

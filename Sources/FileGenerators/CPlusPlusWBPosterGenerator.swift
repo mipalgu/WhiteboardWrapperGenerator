@@ -148,7 +148,7 @@ whiteboard_types_map \(cppns)::types_map; ///< global types map
 
         case \(slotEnumName):
         {
-        \(entry.type.isCustomTypeClass ? "#ifdef \(CPlusPlusClassName.uppercased())_DEFINED" : "")
+        \(entry.type.isCustomTypeClass ? "#ifdef \(WhiteboardHelpers().cppDefinedDef(forClassNamed: CPlusPlusClassName, namespaces: config.cppNamespaces))" : "")
             class \(WBPtrClass) msg_ptr(wbd);
             \(entry.type.isCustomTypeClass ? """
                 \(CPlusPlusClassName) v = msg_ptr.get();
@@ -161,7 +161,7 @@ whiteboard_types_map \(cppns)::types_map; ///< global types map
         \(entry.type.isCustomTypeClass ? """
             #else
                 return false;
-            #endif //\(CPlusPlusClassName.uppercased())_DEFINED
+            #endif //\(WhiteboardHelpers().cppDefinedDef(forClassNamed: CPlusPlusClassName, namespaces: config.cppNamespaces))
             """ : "")
         }
         """

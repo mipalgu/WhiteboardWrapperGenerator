@@ -82,7 +82,7 @@ final public class NamingFuncs {
             return "SerialisationNotSupportedWithLegacyNaming"
         }
         else {
-            return type.typeName.uppercased() + "_GENERATED"
+            return WhiteboardHelpers().createDefName(forClassNamed: type.typeName, namespaces: config.cNamespaces) + "_GENERATED"
         }
     }
 
@@ -91,7 +91,7 @@ final public class NamingFuncs {
             return "NotSupportedWithLegacyNaming"
         }
         else {
-            return type.typeName.uppercased() + "_C_STRUCT"
+            return WhiteboardHelpers().createDefName(forClassNamed: type.typeName, namespaces: config.cNamespaces) + "_C_STRUCT"
         }
     }
 }

@@ -70,8 +70,14 @@ int32_t serialisemsg(\(cns)_types message_index, const void *message_in, void *s
             case \(slotEnumName):
             {
 \(entry.type.isCustomTypeClass ? """
-#ifdef \(isGenerated)
-                return SERIALISE(\(cStructName), (struct \(cStructName) *)message_in, serialised_out)
+#if defined(\(isGenerated))  || defined(\(entry.type.typeName.uppercased())_GENERATED) // \(entry.type.typeName.uppercased())_GENERATED is legacy, don't use
+#ifdef \(cStructName)
+#define \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT \(cStructName)
+#else
+#define \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT \(entry.type.typeName.uppercased())_C_STRUCT
+#endif
+                return SERIALISE(\(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT, (struct \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT *)message_in, serialised_out)
+#undef \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT
 #else
                 return -1;
 #endif //\(isGenerated)

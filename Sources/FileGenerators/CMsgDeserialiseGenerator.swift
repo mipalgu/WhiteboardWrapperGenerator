@@ -68,8 +68,14 @@ int32_t deserialisemsg(\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))
             case \(slotEnumName):
             {
 \(entry.type.isCustomTypeClass ? """
-#ifdef \(isGenerated)
-                return DESERIALISE(\(cStructName), serialised_in, (struct \(cStructName) *)message_out)
+#if defined(\(isGenerated)) || defined(\(entry.type.typeName.uppercased())_GENERATED) // \(entry.type.typeName.uppercased())_GENERATED is legacy, don't use
+#ifdef \(cStructName)
+#define \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT \(cStructName)
+#else
+#define \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT \(entry.type.typeName.uppercased())_C_STRUCT
+#endif
+                return DESERIALISE(\(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT, serialised_in, (struct \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT *)message_out)
+#undef \(entry.type.typeName.uppercased())_C_STRUCT_NAME_COMPAT
 #else
                 return -1;
 #endif //\(isGenerated)

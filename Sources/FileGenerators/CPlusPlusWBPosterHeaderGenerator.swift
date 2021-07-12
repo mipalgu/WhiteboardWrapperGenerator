@@ -30,6 +30,8 @@ final public class CPlusPlusWBPosterHeaderGenerator: FileGenerator {
     public func createContent(obj: T) -> String {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
+        let tsl: TSL = obj //alias
+        let classes: [TSLEntry] = tsl.entries
         let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
         let cppns = WhiteboardHelpers().cppNamespace(of: config.cppNamespaces)
         return """
@@ -44,6 +46,18 @@ final public class CPlusPlusWBPosterHeaderGenerator: FileGenerator {
 #include <string>
 #include <map>
 #include <stdbool.h>
+
+/*
+ * Include your classes below if they have description methods and
+ * string constructors!
+ */
+#ifdef WHITEBOARD_POSTER_STRING_CONVERSION
+\(classes.map { entry in 
+        let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type, config: config)
+        return entry.type.isCustomTypeClass ? "#include \"\(CPlusPlusClassName).h\"\n" : ""
+        }.reduce("", +)
+)
+#endif // WHITEBOARD_POSTER_STRING_CONVERSION
 
 extern "C"
 {

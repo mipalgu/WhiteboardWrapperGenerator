@@ -72,7 +72,13 @@ typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
 
 \(tsl.entries.enumerated().map { elm in
         let (_, e) = elm
-        return "#define \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config))\n"
+        return """
+        #ifndef \(NamingFuncs.createMsgEnumName(e.name.string, config: config))
+        #define \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config))
+        #else
+        #warn "\(NamingFuncs.createMsgEnumName(e.name.string, config: config)) defined twice."
+        #endif\n\n
+        """
         }.reduce("", +)
 )
 

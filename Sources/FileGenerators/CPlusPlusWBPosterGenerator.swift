@@ -143,7 +143,7 @@ whiteboard_types_map \(cppns)::types_map; ///< global types map
 \(classes.map { entry in 
         let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type, config: config)
         let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string, config: config)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumNameNamespaced(entry.name.string, config: config)
         return """
 
         case \(slotEnumName):
@@ -183,7 +183,7 @@ whiteboard_types_map::whiteboard_types_map(): map<string, \(cns)_types>()
     whiteboard_types_map &self = *this;
 
 \(classes.map { entry in 
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumNameNamespaced(entry.name.string, config: config)
         return """
             self[\"\(entry.name.string)\"] = \(slotEnumName);
 

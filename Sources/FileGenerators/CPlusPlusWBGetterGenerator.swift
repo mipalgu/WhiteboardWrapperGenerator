@@ -139,7 +139,7 @@ static string intvectostring(const vector<int> &vec)
 \(classes.map { entry in 
         let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type, config: config)
         let WBPtrClass = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string, config: config)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumNameNamespaced(entry.name.string, config: config)
         let get_fromStringConverted: String = createToString(type: entry.type, inputVarName: "m.get_from(msg)")
         let getStringConverted: String = createToString(type: entry.type, inputVarName: "m.get()")
         return """

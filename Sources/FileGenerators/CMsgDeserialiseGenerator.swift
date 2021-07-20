@@ -62,7 +62,7 @@ int32_t deserialisemsg(\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))
 \(classes.map { entry in 
         let isGenerated = NamingFuncs.createWasClassGeneratedFlag(entry.type, config: config)
         let cStructName = NamingFuncs.createClassGeneratorCStructFlag(entry.type, config: config)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumNameNamespaced(entry.name.string, config: config)
         return """
 
             case \(slotEnumName):

@@ -64,7 +64,7 @@ int32_t serialisemsg(\(cns)_types message_index, const void *message_in, void *s
 \(classes.map { entry in 
         let isGenerated = NamingFuncs.createWasClassGeneratedFlag(entry.type, config: config)
         let cStructName = NamingFuncs.createClassGeneratorCStructFlag(entry.type, config: config)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumNameNamespaced(entry.name.string, config: config)
         return """
 
             case \(slotEnumName):

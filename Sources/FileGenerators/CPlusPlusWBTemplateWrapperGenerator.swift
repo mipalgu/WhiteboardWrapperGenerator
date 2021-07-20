@@ -56,7 +56,7 @@ extern \"C\"
 \(classes.map { entry in 
         let templateDataType = NamingFuncs.createCPlusPlusTemplateDataType(entry.type, config: config)
         let templateClassName = NamingFuncs.createCPlusPlusTemplateClassName(entry.name.string, config: config)
-        let slotEnumName = NamingFuncs.createMsgEnumName(entry.name.string, config: config)
+        let slotEnumName = NamingFuncs.createMsgEnumNameNamespaced(entry.name.string, config: config)
         let atomicString = entry.atomic.value ? "true" : "false"
         let cns = WhiteboardHelpers().cNamespace(of: config.cNamespaces)
         return """

@@ -76,7 +76,7 @@ typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
         #ifndef \(NamingFuncs.createMsgEnumName(e.name.string, config: config))
         #define \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config))
         #else
-        #warn "\(NamingFuncs.createMsgEnumName(e.name.string, config: config)) defined twice."
+        #warning "\(NamingFuncs.createMsgEnumName(e.name.string, config: config)) defined twice."
         #endif\n\n
         """
         }.reduce("", +)

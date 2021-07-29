@@ -44,14 +44,20 @@ final public class CPlusPlusWBTemplateWrapperGenerator: FileGenerator {
 #pragma clang diagnostic ignored \"-Wpadded\"
 #pragma clang diagnostic ignored \"-Wc++98-compat\"
 
+#undef CPP_WHITEBOARD_NAMESPACE
 #define CPP_WHITEBOARD_NAMESPACE \(WhiteboardHelpers().cppNamespace(of: config.cppNamespaces))
-
-\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
 
 extern \"C\"
 {
 #include \"guwhiteboardtypelist_c_generated.h\"
 }
+
+\(config.cppNamespaces.map({ "namespace " + $0 + " {\n" }).joined(separator: ""))
+
+typedef ::\(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types;
+
+typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
+
 
 \(classes.map { entry in 
         let templateDataType = NamingFuncs.createCPlusPlusTemplateDataType(entry.type, config: config)

@@ -44,7 +44,11 @@ final public class MsgEnumHeaderGenerator: FileGenerator {
 
 #define \(ntd) \(tsl.entries.count)
 
+#undef C_WHITEBOARD_NAMESPACE
 #define C_WHITEBOARD_NAMESPACE \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))
+
+#undef C_WBTYPES
+#define C_WBTYPES \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 
 #if \(ntd) > GSW_NUM_RESERVED
 #error *** Error: gusimplewhiteboard: The number of defined types exceeds the total number of reserved types allowed. Increase GSW_NUM_RESERVED to solve this.
@@ -65,18 +69,21 @@ typedef enum \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types
 )
 
 } \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types; ///< All the message 'types' for the class based whiteboard 
+
+#ifdef WANT_OLD_WHITEBOARD_NAMING_COMPAT
+
 #ifndef WBTypes_DEFINED
 #define WBTypes_DEFINED
 typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
 #endif
+
+#endif //WANT_OLD_WHITEBOARD_NAMING_COMPAT
 
 \(tsl.entries.enumerated().map { elm in
         let (_, e) = elm
         return """
         #ifndef \(NamingFuncs.createMsgEnumName(e.name.string, config: config))
         #define \(NamingFuncs.createMsgEnumName(e.name.string, config: config)) \(NamingFuncs.createMsgEnumNameNamespaced(e.name.string, config: config))
-        #else
-        #warning "\(NamingFuncs.createMsgEnumName(e.name.string, config: config)) defined twice."
         #endif\n\n
         """
         }.reduce("", +)

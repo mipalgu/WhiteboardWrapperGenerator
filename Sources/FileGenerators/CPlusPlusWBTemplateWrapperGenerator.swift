@@ -75,6 +75,12 @@ typedef \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types WBTypes;
                     /** Convenience constructor for non-class types. Pass a value and it'll be set in the Whiteboard: \(templateClassName) */ 
                     \(templateClassName)(\(templateDataType) value, gu_simple_whiteboard_descriptor *wbd = NULLPTR): \(cns)_generic_whiteboard_object<\(templateDataType) >(value, \(slotEnumName), wbd, \(atomicString)) {}
                     """)
+
+                static const \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types slot = \(slotEnumName);
+
+                u_int16_t eventCounter() const {
+                    return _wbd->wb->event_counters[\(templateClassName)::slot];
+                }
             };
 
 

@@ -31,6 +31,7 @@ final public class CTypeStringLookupGenerator: FileGenerator {
         let copyright = FileGeneratorHelpers.createCopyright(fileName: self.name)
         let (ifDefTop, ifDefBottom) = FileGeneratorHelpers.createIfDefWrapper(fileName: self.name, config: config) 
         let tsl: TSL = obj //alias
+        let wbNamePrefix = self.config.defaultWhiteboardName
         let classes: [TSLEntry] = tsl.entries
         let ntd = WhiteboardHelpers().createDefName(forClassNamed: "NUM_TYPES_DEFINED", namespaces: config.cNamespaces)
         return """
@@ -47,7 +48,7 @@ final public class CTypeStringLookupGenerator: FileGenerator {
 #include \"guwhiteboardtypelist_c_generated.h\"
 
 //Hack for WBTypes_stringValues extern
-#ifndef BUILD_WB_LIBRARY
+#ifdef BUILD_WB_LIBRARY_\(wbNamePrefix.uppercased())
 int num_types_defined = \(ntd);
 const char **WBTypes_stringValues = \(WhiteboardHelpers().cNamespace(of: config.cNamespaces))_types_stringValues;
 #endif

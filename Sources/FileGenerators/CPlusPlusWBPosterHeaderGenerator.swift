@@ -54,7 +54,7 @@ final public class CPlusPlusWBPosterHeaderGenerator: FileGenerator {
 #ifdef WHITEBOARD_POSTER_STRING_CONVERSION
 \(classes.map { entry in 
         let CPlusPlusClassName = NamingFuncs.createCPlusPlusClassName(entry.type, config: config)
-        return entry.type.isCustomTypeClass ? "#include \"\(CPlusPlusClassName).h\"\n" : ""
+        return entry.type.isCustomTypeClass ? "#include \"\(CPlusPlusClassName).hpp\"\n" : ""
         }.reduce("", +)
 )
 #endif // WHITEBOARD_POSTER_STRING_CONVERSION
